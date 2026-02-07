@@ -17,6 +17,22 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue'),
     },
+    {
+      path: '/motivation',
+      name: 'motivation',
+      component: () => import('../views/MotivationView.vue'),
+    },
+    {
+      path: '/chanmi',
+      name: 'chanmi',
+      component: () => import(`../views/ChanmiView.vue`),
+    },
+    {
+      path: '/chanmi/:slug',
+      name: 'chanmi_wrapper',
+      component: () => import(`../views/ChanmiWrapper.vue`)
+    }
+
   ],
 })
 

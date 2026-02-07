@@ -1,24 +1,28 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 import LeftSide from './components/LeftSide.vue'
 </script>
 
 <template>
   <header>
     <div class="wrapper">
-      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-      <LeftSide />
-      <HelloWorld msg="You did it" />
+      <div class="w-[400px]">
+        <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="400" />
+        <LeftSide />
+      </div>
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/motivation">Motivation</RouterLink>
+        <RouterLink to="/chanmi">Chanmi</RouterLink>
       </nav>
     </div>
   </header>
 
-  <RouterView />
+  <div class="router-view-container">
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>
@@ -33,7 +37,6 @@ header {
 }
 
 nav {
-  width: 100%;
   font-size: 12px;
   text-align: center;
   margin-top: 2rem;
@@ -57,6 +60,11 @@ nav a:first-of-type {
   border: 0;
 }
 
+.router-view-container {
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+}
+
 @media (min-width: 1024px) {
   header {
     display: flex;
@@ -70,6 +78,7 @@ nav a:first-of-type {
 
   header .wrapper {
     display: flex;
+    flex-direction: column;
     place-items: flex-start;
     flex-wrap: wrap;
   }

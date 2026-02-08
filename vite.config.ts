@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
 import Markdown from 'unplugin-vue-markdown/vite'
+import Components from 'unplugin-vue-components/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -16,6 +17,11 @@ export default defineConfig({
       markdownItOptions: {
         breaks: true, // 単一の改行を<br>タグに変換
       },
+    }),
+    Components({
+      extensions: ['vue', 'md'],
+      include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+      dts: 'src/components.d.ts',
     }),
     vueDevTools(),
     tailwindcss(),

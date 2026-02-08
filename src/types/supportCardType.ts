@@ -1,5 +1,5 @@
 export type CardType = "speed" | "stamina" | "power" | "guts" | "wit";
-export type CardRarity = "SSR" | "SR";
+export type CardRarity = "ssr" | "sr";
 
 const supportCardSpeedSSR = [
   "Biko Pegasus",
@@ -155,13 +155,13 @@ export type SupportCardName =
   | SupportCardWitSR;
 
 export type SupportCardProps =
-  | { type: "speed"; rarity: "SSR"; name: SupportCardSpeedSSR }
-  | { type: "speed"; rarity: "SR"; name: SupportCardSpeedSR }
-  | { type: "stamina"; rarity: "SSR"; name: SupportCardStaminaSSR }
-  | { type: "stamina"; rarity: "SR"; name: SupportCardStaminaSR }
-  | { type: "power"; rarity: "SSR"; name: SupportCardPowerSSR }
-  | { type: "power"; rarity: "SR"; name: SupportCardPowerSR }
-  | { type: "guts"; rarity: "SSR"; name: SupportCardGutsSSR }
-  | { type: "guts"; rarity: "SR"; name: SupportCardGutsSR }
-  | { type: "wit"; rarity: "SSR"; name: SupportCardWitSSR }
-  | { type: "wit"; rarity: "SR"; name: SupportCardWitSR }
+  | { type: "speed"; rarity: "ssr"; name: SupportCardSpeedSSR }
+  | { type: "speed"; rarity: "sr"; name: SupportCardSpeedSR }
+  | { type: "stamina"; rarity: "ssr"; name: SupportCardStaminaSSR }
+  | { type: "stamina"; rarity: "sr"; name: SupportCardStaminaSR }
+  | { type: "power"; rarity: "ssr"; name: SupportCardPowerSSR }
+  | { type: "power"; rarity: "sr"; name: SupportCardPowerSR }
+  | { type: "guts"; rarity: "ssr"; name: SupportCardGutsSSR }
+  | { type: "guts"; rarity: "sr"; name: SupportCardGutsSR }
+  | { type: "wit"; rarity: "ssr"; name: SupportCardWitSSR }
+  | { type: "wit"; rarity: "sr"; name: SupportCardWitSR }

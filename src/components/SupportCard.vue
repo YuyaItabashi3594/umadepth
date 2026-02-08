@@ -1,17 +1,31 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import type { SupportCardProps } from '@/types/supportCardType';
 
 const props = withDefaults(
   defineProps<SupportCardProps & {
     width?: number;
+    description?: string;
   }>(),
   {
-    rarity: "SSR",
-    width: 300
+    rarity: "ssr",
+    width: 100
   }
 );
+const supportImagePath = `/images/supports/${props.type}/${props.rarity}/${props.name}.jpg`;
+const fallbackImagePath = '/images/supports/Agemasen.jpg';
+const currentImagePath = ref(supportImagePath);
+
+const handleImageError = () => {
+  currentImagePath.value = fallbackImagePath;
+};
+
 </script>
 <template>
-  <div>
+  <div :style="{ width: `${props.width}px` }">
+    <figure>
+      <img :src="currentImagePath" :alt="props.name" @error="handleImageError" />
+      <figcaption v-if="props.description">{{ props.description }}</figcaption>
+    </figure>
   </div>
 </template>

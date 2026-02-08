@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import SupportCard from '@/components/SupportCard.vue';
+import CardRow from '@/components/CardRow.vue';
+</script>
 ## Course
 Chukyo,Turf,1200m(Sprint)
 Winter,⛄️,Soft
@@ -19,6 +23,11 @@ Higher Wits is for skill activation and downhill mode
 - Shadow Break,Certain Victory
 
 ### Deck
+<CardRow>
+    <SupportCard type="wit" rarity="ssr" name="Nice Nature"/>
+    <SupportCard type="wit" rarity="ssr" name="Fine Motion"/>
+</CardRow>
+this 2 Wit cards let you 1000+ Wit easily
 
 
 ## Front

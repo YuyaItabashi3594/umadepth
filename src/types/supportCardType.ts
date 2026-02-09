@@ -1,5 +1,5 @@
 export type CardType = "speed" | "stamina" | "power" | "guts" | "wit";
-export type CardRarity = "ssr" | "sr";
+export type CardRarity = "ssr" | "sr" | "any";
 
 const supportCardSpeedSSR = [
   "Biko Pegasus",
@@ -131,6 +131,13 @@ const supportCardWitSR = [
   "Mejiro Ardan",
 ] as const;
 
+const supportCardPals = [
+  "Kiryuin",
+  "Tazuna",
+  "Riko",
+  "Anshinzawa"
+]
+
 export type SupportCardSpeedSSR = typeof supportCardSpeedSSR[number];
 export type SupportCardSpeedSR = typeof supportCardSpeedSR[number];
 export type SupportCardStaminaSSR = typeof supportCardStaminaSSR[number];
@@ -141,6 +148,7 @@ export type SupportCardGutsSSR = typeof supportCardGutsSSR[number];
 export type SupportCardGutsSR = typeof supportCardGutsSR[number];
 export type SupportCardWitSSR = typeof supportCardWitSSR[number];
 export type SupportCardWitSR = typeof supportCardWitSR[number];
+export type SupportCardPal = typeof supportCardPals[number];
 
 export type SupportCardName =
   | SupportCardSpeedSSR
@@ -152,7 +160,8 @@ export type SupportCardName =
   | SupportCardGutsSSR
   | SupportCardGutsSR
   | SupportCardWitSSR
-  | SupportCardWitSR;
+  | SupportCardWitSR
+  | SupportCardPal;
 
 export type SupportCardSpeedSSRProps = {
   type: "speed";
@@ -230,6 +239,14 @@ export type SupportCardWitSRProps = {
   type: "wit";
   rarity: "sr";
   name: SupportCardWitSR;
+  width?: number;
+  description?: string;
+};
+
+export type SupportCardPalProps = {
+  type: "pal";
+  rarity: "any";
+  name: SupportCardPal;
   width?: number;
   description?: string;
 };

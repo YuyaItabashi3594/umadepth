@@ -70,9 +70,12 @@ Some say this skill is not strong,but <a href="https://ウマ娘.攻略.tools/ra
 
 ### Deck
 
+#### Core
 <CardRow>
   <SupportCard type="wit" rarity="ssr" name="Fine Motion" />
   <SupportCard type="wit" rarity="ssr" name="Nice Nature" />
   <SupportCard type="speed" rarity="ssr" name="Kitasan Black" />
   <SupportCard type="speed" rarity="ssr" name="Tokai Teio" />
 </CardRow>
+
+#### Optional

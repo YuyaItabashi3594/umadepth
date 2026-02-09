@@ -40,7 +40,7 @@ Some say this skill is not strong,but <a href="https://ウマ娘.攻略.tools/ra
     </CardRow>
   </template>
   <template #description>
-    I prefer Hachimi because it has better events:10*3 Health + Mood Up random event
+    I prefer Hachimi because it has better events:10*3 Health + Mood Up random event,and 1 power bonus
   </template>
 </ImageDescription>
 
@@ -74,8 +74,52 @@ Some say this skill is not strong,but <a href="https://ウマ娘.攻略.tools/ra
 <CardRow>
   <SupportCard type="wit" rarity="ssr" name="Fine Motion" />
   <SupportCard type="wit" rarity="ssr" name="Nice Nature" />
+  <SupportCard type="wit" rarity="ssr" name="Mihono Bourbon" />
   <SupportCard type="speed" rarity="ssr" name="Kitasan Black" />
   <SupportCard type="speed" rarity="ssr" name="Tokai Teio" />
 </CardRow>
 
 #### Optional
+<SupportCard type="speed" rarity="ssr" name="Sakura Bakushin O" />
+If you don't have Hachimi and have 3LB/MLB one
+<SupportCard type="power" rarity="ssr" name="Smart Falcon" />
+GW,Green skills,Final Push(Run away instead of Downloading)
+<SupportCard type="pals" rarity="any" name="Tazuna" />
+Concentration,Tail Held High,no stress run
+
+## Pace ⭐️
+
+### Skills
+- mummy/plancha 🔥
+- Head-On 🔥
+- Prepare to Pass/Speed Star 👀
+- Plan X 👀
+- Concentration 👀
+- GW and Green skills(optional): Even GW if someone procs Turbo Sprint in early race you will get PDM 💀
+
+### Deck
+
+#### Core
+<CardRow>
+  <SupportCard type="wit" rarity="ssr" name="Fine Motion" />
+  <SupportCard type="wit" rarity="ssr" name="Nice Nature" />
+  <SupportCard type="speed" rarity="ssr" name="Tokai Teio" />
+  <SupportCard type="speed" rarity="ssr" name="Biko Pegasus" />
+  <SupportCard type="speed" rarity="ssr" name="Matikanefukukitaru" />
+</CardRow>
+3speed 2wit 1power/tazuna or 3speed 3wit
+
+#### Optional
+<SupportCard type="speed" rarity="ssr" name="Sakura Bakushin O" />
+If you don't have Hachimi and have 3LB/MLB one
+<SupportCard type="pals" rarity="any" name="Tazuna" />
+Concentration,Tail Held High,no stress run
+<CardRow>
+  <SupportCard type="wit" rarity="sr" name="Mejiro Ardan" />
+  <SupportCard type="wit" rarity="sr" name="Marvelous Sunday" />
+</CardRow>
+If you don't have Tazuna use one of these
+<SupportCard type="power" rarity="ssr" name="Vodka" />
+this card gives 50 power and 60 SP. Best friendship training gives you more than 1000 power if you click power 1-2 times
+<script setup lang="ts">
+</script>

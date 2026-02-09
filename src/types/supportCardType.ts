@@ -1,4 +1,4 @@
-export type CardType = "speed" | "stamina" | "power" | "guts" | "wit";
+export type CardType = "speed" | "stamina" | "power" | "guts" | "wit" | "pals";
 export type CardRarity = "ssr" | "sr" | "any";
 
 const supportCardSpeedSSR = [
@@ -148,7 +148,7 @@ export type SupportCardGutsSSR = typeof supportCardGutsSSR[number];
 export type SupportCardGutsSR = typeof supportCardGutsSR[number];
 export type SupportCardWitSSR = typeof supportCardWitSSR[number];
 export type SupportCardWitSR = typeof supportCardWitSR[number];
-export type SupportCardPal = typeof supportCardPals[number];
+export type SupportCardPals = typeof supportCardPals[number];
 
 export type SupportCardName =
   | SupportCardSpeedSSR
@@ -161,7 +161,7 @@ export type SupportCardName =
   | SupportCardGutsSR
   | SupportCardWitSSR
   | SupportCardWitSR
-  | SupportCardPal;
+  | SupportCardPals;
 
 export type SupportCardSpeedSSRProps = {
   type: "speed";
@@ -243,10 +243,10 @@ export type SupportCardWitSRProps = {
   description?: string;
 };
 
-export type SupportCardPalProps = {
-  type: "pal";
+export type SupportCardPalsProps = {
+  type: "pals";
   rarity: "any";
-  name: SupportCardPal;
+  name: SupportCardPals;
   width?: number;
   description?: string;
 };
@@ -261,4 +261,5 @@ export type SupportCardProps =
   | SupportCardGutsSSRProps
   | SupportCardGutsSRProps
   | SupportCardWitSSRProps
-  | SupportCardWitSRProps;
+  | SupportCardWitSRProps
+  | SupportCardPalsProps

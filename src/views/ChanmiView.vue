@@ -18,7 +18,9 @@ const articleSlugs = computed(() => {
     <h1 class="text-4xl">Chanmi Guides</h1>
     <ul>
       <li v-for="slug in articleSlugs" :key="slug">
-        <RouterLink :to="`/chanmi/${slug}`">{{ slug }}</RouterLink>
+        <RouterLink :to="`/chanmi/${slug}`">
+          <span class="capitalize">{{ slug }}</span>
+        </RouterLink>
       </li>
     </ul>
   </div>

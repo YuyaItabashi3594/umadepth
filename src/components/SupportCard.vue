@@ -3,10 +3,7 @@ import { ref } from 'vue';
 import type { SupportCardProps } from '@/types/supportCardType';
 
 const props = withDefaults(
-  defineProps<SupportCardProps & {
-    width?: number;
-    description?: string;
-  }>(),
+  defineProps<SupportCardProps>(),
   {
     rarity: "ssr",
     width: 100
@@ -23,7 +20,7 @@ const handleImageError = () => {
 </script>
 <template>
   <div :style="{ width: `${props.width}px` }">
-    <figure>
+    <figure class="image">
       <img :src="currentImagePath" :alt="props.name" @error="handleImageError" />
       <figcaption v-if="props.description">{{ props.description }}</figcaption>
     </figure>

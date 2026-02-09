@@ -2,6 +2,7 @@
 withDefaults(
   defineProps<{
     gap?: number;
+    columns?: number;
   }>(),
   {
     gap: 4
@@ -10,7 +11,10 @@ withDefaults(
 </script>
 
 <template>
-  <div class="flex gap-4 flex-wrap">
+  <div
+    class="flex gap-2 flex-wrap"
+    :style="columns ? { display: 'grid', gridTemplateColumns: `repeat(${columns}, 1fr)` } : {}"
+  >
     <slot />
   </div>
 </template>

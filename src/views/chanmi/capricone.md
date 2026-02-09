@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import SupportCard from '@/components/SupportCard.vue';
-import CardRow from '@/components/CardRow.vue';
-</script>
 ## Course
 Chukyo,Turf,1200m(Sprint)
 Winter,⛄️,Soft
@@ -23,12 +19,43 @@ Some say this skill is not strong,but <a href="https://ウマ娘.攻略.tools/ra
 - Meticulous Measures: unstable acceleration skill so white version is enough
 - Shadow Break,Certain Victory
 
-### Deck
-<CardRow>
-    <SupportCard type="wit" rarity="ssr" name="Nice Nature"/>
-    <SupportCard type="wit" rarity="ssr" name="Fine Motion"/>
-</CardRow>
-this 2 Wit cards let you 1000+ Wit easily
+### Cards
+<ImageDescription>
+  <template #image>
+    <CardRow :columns="2">
+      <SupportCard type="wit" rarity="ssr" name="Nice Nature"/>
+      <SupportCard type="wit" rarity="ssr" name="Fine Motion"/>
+    </CardRow>
+  </template>
+  <template #description>
+    2 Best Tier Wit cards and you should have NN because there were spotlight 2 times
+  </template>
+</ImageDescription>
+
+<ImageDescription>
+  <template #image>
+    <CardRow :columns="2">
+      <SupportCard type="speed" rarity="ssr" name="Tokai Teio" />
+      <SupportCard type="speed" rarity="ssr" name="Sakura Bakushin O" />
+    </CardRow>
+  </template>
+  <template #description>
+    I prefer Hachimi because it has better events:10*3 Health + Mood Up random event
+  </template>
+</ImageDescription>
+
+<ImageDescription>
+  <template #image>
+    <CardRow :columns="2">
+      <SupportCard type="speed" rarity="ssr" name="Matikanefukukitaru" />
+      <SupportCard type="power" rarity="ssr" name="Rice Shower" />
+      <SupportCard type="power" rarity="ssr" name="Vodka" />
+    </CardRow>
+  </template>
+  <template #description>
+    if your uma needs some Stamina to survive her career Matikanefukukitaru/power cards will help you
+  </template>
+</ImageDescription>
 
 
 ## Front
@@ -42,3 +69,10 @@ this 2 Wit cards let you 1000+ Wit easily
 - Dodging Danger & Prudent Positioning 👀
 
 ### Deck
+
+<CardRow>
+  <SupportCard type="wit" rarity="ssr" name="Fine Motion" />
+  <SupportCard type="wit" rarity="ssr" name="Nice Nature" />
+  <SupportCard type="speed" rarity="ssr" name="Kitasan Black" />
+  <SupportCard type="speed" rarity="ssr" name="Tokai Teio" />
+</CardRow>

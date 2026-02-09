@@ -154,14 +154,94 @@ export type SupportCardName =
   | SupportCardWitSSR
   | SupportCardWitSR;
 
+export type SupportCardSpeedSSRProps = {
+  type: "speed";
+  rarity: "ssr";
+  name: SupportCardSpeedSSR;
+  width?: number;
+  description?: string;
+};
+
+export type SupportCardSpeedSRProps = {
+  type: "speed";
+  rarity: "sr";
+  name: SupportCardSpeedSR;
+  width?: number;
+  description?: string;
+};
+
+export type SupportCardStaminaSSRProps = {
+  type: "stamina";
+  rarity: "ssr";
+  name: SupportCardStaminaSSR;
+  width?: number;
+  description?: string;
+};
+
+export type SupportCardStaminaSRProps = {
+  type: "stamina";
+  rarity: "sr";
+  name: SupportCardStaminaSR;
+  width?: number;
+  description?: string;
+};
+
+export type SupportCardPowerSSRProps = {
+  type: "power";
+  rarity: "ssr";
+  name: SupportCardPowerSSR;
+  width?: number;
+  description?: string;
+};
+
+export type SupportCardPowerSRProps = {
+  type: "power";
+  rarity: "sr";
+  name: SupportCardPowerSR;
+  width?: number;
+  description?: string;
+};
+
+export type SupportCardGutsSSRProps = {
+  type: "guts";
+  rarity: "ssr";
+  name: SupportCardGutsSSR;
+  width?: number;
+  description?: string;
+};
+
+export type SupportCardGutsSRProps = {
+  type: "guts";
+  rarity: "sr";
+  name: SupportCardGutsSR;
+  width?: number;
+  description?: string;
+};
+
+export type SupportCardWitSSRProps = {
+  type: "wit";
+  rarity: "ssr";
+  name: SupportCardWitSSR;
+  width?: number;
+  description?: string;
+};
+
+export type SupportCardWitSRProps = {
+  type: "wit";
+  rarity: "sr";
+  name: SupportCardWitSR;
+  width?: number;
+  description?: string;
+};
+
 export type SupportCardProps =
-  | { type: "speed"; rarity: "ssr"; name: SupportCardSpeedSSR }
-  | { type: "speed"; rarity: "sr"; name: SupportCardSpeedSR }
-  | { type: "stamina"; rarity: "ssr"; name: SupportCardStaminaSSR }
-  | { type: "stamina"; rarity: "sr"; name: SupportCardStaminaSR }
-  | { type: "power"; rarity: "ssr"; name: SupportCardPowerSSR }
-  | { type: "power"; rarity: "sr"; name: SupportCardPowerSR }
-  | { type: "guts"; rarity: "ssr"; name: SupportCardGutsSSR }
-  | { type: "guts"; rarity: "sr"; name: SupportCardGutsSR }
-  | { type: "wit"; rarity: "ssr"; name: SupportCardWitSSR }
-  | { type: "wit"; rarity: "sr"; name: SupportCardWitSR }
+  | SupportCardSpeedSSRProps
+  | SupportCardSpeedSRProps
+  | SupportCardStaminaSSRProps
+  | SupportCardStaminaSRProps
+  | SupportCardPowerSSRProps
+  | SupportCardPowerSRProps
+  | SupportCardGutsSSRProps
+  | SupportCardGutsSRProps
+  | SupportCardWitSSRProps
+  | SupportCardWitSRProps;

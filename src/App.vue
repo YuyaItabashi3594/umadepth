@@ -17,6 +17,7 @@ import LeftSide from './components/LeftSide.vue'
         <RouterLink to="/motivation">Motivation</RouterLink>
         <RouterLink to="/chanmi">Chanmi</RouterLink>
       </nav>
+      <a style="position: fixed; bottom: 20px; left: 20px;" href="https://www.buymeacoffee.com/nemunyan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
     </div>
   </header>
 

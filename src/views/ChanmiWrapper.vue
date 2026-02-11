@@ -28,6 +28,7 @@ const markdownComponent = computed(() => {
           <li>⭐️ I use this Style uma so I have better info</li>
           <li>🔥 must-have</li>
           <li>👀 recommended</li>
+          <li>❌ not working</li>
         </ul>
       </div>
     </div>

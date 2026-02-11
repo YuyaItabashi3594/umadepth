@@ -12,7 +12,7 @@ withDefaults(
 </script>
 
 <template>
-  <div class="flex items-center justify-center border p-2 rounded-md" :style="{ gap: `${gap}px` }">
+  <div class="flex items-center justify-start border p-2 rounded-md" :style="{ gap: `${gap}px` }">
     <div class="image-section" :style="{ width: imageWidth }">
       <slot name="image" />
     </div>

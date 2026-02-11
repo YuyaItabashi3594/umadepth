@@ -136,7 +136,7 @@ const supportCardPals = [
   "Tazuna",
   "Riko",
   "Anshinzawa"
-]
+] as const;
 
 export type SupportCardSpeedSSR = typeof supportCardSpeedSSR[number];
 export type SupportCardSpeedSR = typeof supportCardSpeedSR[number];

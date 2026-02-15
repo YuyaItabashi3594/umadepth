@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import ImageModal from '@/components/ImageModal.vue';
 import CollapsibleSection from '@/components/CollapsibleSection.vue';
 </script>

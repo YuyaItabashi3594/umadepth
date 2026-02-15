@@ -10,13 +10,13 @@ import Components from 'unplugin-vue-components/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    vue({
-      include: [/\.vue$/, /\.md$/], // markdownファイルをvueコンポーネントとして扱う
-    }),
     Markdown({
       markdownItOptions: {
         breaks: true, // 単一の改行を<br>タグに変換
       },
+    }),
+    vue({
+      include: [/\.vue$/, /\.md$/], // markdownファイルをvueコンポーネントとして扱う
     }),
     Components({
       extensions: ['vue', 'md'],

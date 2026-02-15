@@ -14,11 +14,13 @@
       <li>oshi gamers</li>
       <li>people want to play with many umas</li>
       <li>off-meta gamers</li>
+      <li>people want to see subjective issues</li>
     </ul>
     <p>This guide is not for</p>
     <ul>
       <li>F2P: You can't make your oshi win without plenty of support cards for reinforcement.</li>
       <li>people want guarantee wins/platinus title: You can win more if you use meta-umas and make same efforts.</li>
+      <li>people want to see objective issues/statistics</li>
     </ul>
   </div>
 </template>

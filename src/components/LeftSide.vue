@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="mt-10">
+  <div class="">
     <h1>Uma Depth Guide</h1>
     <h3>Guide for oshi/non-meta enjoyers</h3>
   </div>

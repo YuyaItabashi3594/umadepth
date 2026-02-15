@@ -98,12 +98,32 @@ Some say this skill is not strong,but <a href="https://ウマ娘.攻略.tools/ra
 </CardRow>
 
 #### Optional
-<SupportCard type="speed" rarity="ssr" name="Sakura Bakushin O" />
-If you don't have Hachimi and have 3LB/MLB one
-<SupportCard type="power" rarity="ssr" name="Smart Falcon" />
-GW,Green skills,Final Push(Run away instead of Downloading)
-<SupportCard type="pals" rarity="any" name="Tazuna" />
-Concentration,Tail Held High,no stress run
+<ImageDescription>
+  <template #image>
+    <SupportCard type="speed" rarity="ssr" name="Sakura Bakushin O" />
+  </template>
+  <template #description>
+    If you don't have Hachimi and have 3LB/MLB one
+  </template>
+</ImageDescription>
+
+<ImageDescription>
+  <template #image>
+    <SupportCard type="power" rarity="ssr" name="Smart Falcon" />
+  </template>
+  <template #description>
+    GW,Green skills,Final Push(Run away instead of Downloading)
+  </template>
+</ImageDescription>
+
+<ImageDescription>
+  <template #image>
+    <SupportCard type="pals" rarity="any" name="Tazuna" />
+  </template>
+  <template #description>
+    Concentration,Tail Held High,no stress run
+  </template>
+</ImageDescription>
 
 ## Pace ⭐️
 
@@ -128,17 +148,44 @@ Concentration,Tail Held High,no stress run
 3speed 2wit 1power/tazuna or 3speed 3wit
 
 #### Optional
-<SupportCard type="speed" rarity="ssr" name="Sakura Bakushin O" />
-If you don't have Hachimi and have 3LB/MLB one
-<SupportCard type="pals" rarity="any" name="Tazuna" />
-Concentration,Tail Held High,no stress run
-<CardRow>
-  <SupportCard type="wit" rarity="sr" name="Mejiro Ardan" />
-  <SupportCard type="wit" rarity="sr" name="Marvelous Sunday" />
-</CardRow>
-If you don't have Tazuna use one of these
-<SupportCard type="power" rarity="ssr" name="Vodka" />
-this card gives 50 power and 60 SP. Best friendship training gives you more than 1000 power if you click power 1-2 times
+<ImageDescription>
+  <template #image>
+    <SupportCard type="speed" rarity="ssr" name="Sakura Bakushin O" />
+  </template>
+  <template #description>
+    If you don't have Hachimi and have 3LB/MLB one
+  </template>
+</ImageDescription>
+
+<ImageDescription>
+  <template #image>
+    <SupportCard type="pals" rarity="any" name="Tazuna" />
+  </template>
+  <template #description>
+    Concentration,Tail Held High,no stress run
+  </template>
+</ImageDescription>
+
+<ImageDescription>
+  <template #image>
+    <CardRow>
+      <SupportCard type="wit" rarity="sr" name="Mejiro Ardan" />
+      <SupportCard type="wit" rarity="sr" name="Marvelous Sunday" />
+    </CardRow>
+  </template>
+  <template #description>
+    If you don't have Tazuna use one of these
+  </template>
+</ImageDescription>
+
+<ImageDescription>
+  <template #image>
+    <SupportCard type="power" rarity="ssr" name="Vodka" />
+  </template>
+  <template #description>
+    this card gives 50 power and 60 SP. Best friendship training gives you more than 1000 power if you click power 1-2 times
+  </template>
+</ImageDescription>
 
 ### My uma
 <CollapsibleSection title="Bakushin">
@@ -198,6 +245,8 @@ this card gives 50 power and 60 SP. Best friendship training gives you more than
 
 ## Late ⭐️
 
+You may need to run 1-2 Fronts to stop Lucky Pace from other players. I tried plenty times,and only my King Halo won when there was at least 1 Front.
+
 ### Skills
 - mummy 🔥
 - On Your Left! 🔥
@@ -216,3 +265,111 @@ Only OYL is effective Late skill.
 </CardRow>
 3speed 2wit 1power/tazuna or 3speed 3wit
 Due to OYL you must use NN Wit.
+
+#### Optional
+<ImageDescription>
+  <template #image>
+    <SupportCard type="speed" rarity="ssr" name="Sakura Bakushin O" />
+  </template>
+  <template #description>
+    If you don't have Hachimi and have 3LB/MLB one
+  </template>
+</ImageDescription>
+
+<ImageDescription>
+  <template #image>
+    <SupportCard type="pals" rarity="any" name="Tazuna" />
+  </template>
+  <template #description>
+    Tail Held High,no stress run
+  </template>
+</ImageDescription>
+
+<ImageDescription>
+  <template #image>
+    <CardRow>
+      <SupportCard type="wit" rarity="sr" name="Matikanefukukitaru" />
+      <SupportCard type="wit" rarity="sr" name="Marvelous Sunday" />
+    </CardRow>
+  </template>
+  <template #description>
+    If you don't have NN and have to borrow NN use one or both.
+  </template>
+</ImageDescription>
+
+<ImageDescription>
+  <template #image>
+    <SupportCard type="power" rarity="ssr" name="Vodka" />
+  </template>
+  <template #description>
+    this card gives 50 power and 60 SP. Best friendship training gives you more than 1000 power if you click power 1-2 times
+  </template>
+</ImageDescription>
+
+### My uma
+<CollapsibleSection title="King Halo(Fast Learner,I may not use for actual CM)">
+<ImageDescription>
+  <template #image>
+    <ImageModal class="w-[200px]" src="/images/myuma/capricone/UmamusumePrettyDerby815.png" alt="KingHalo" />
+  </template>
+  <template #description>
+    <CardRow>
+      <SupportCard type="wit" rarity="ssr" name="Fine Motion" />
+      <SupportCard type="wit" rarity="ssr" name="Nice Nature" />
+      <SupportCard type="speed" rarity="ssr" name="Tokai Teio" />
+      <SupportCard type="speed" rarity="ssr" name="Kitasan Black" />
+      <SupportCard type="speed" rarity="ssr" name="Matikanefukukitaru" />
+      <SupportCard type="pals" rarity="any" name="Tazuna" />
+    </CardRow>
+    Fast Learner,but I can't let her win. My Paces always win. Only King wins when jobber lobby and there is at least 1 Front.
+  </template>
+</ImageDescription>
+</CollapsibleSection>
+
+## End
+
+### Skills
+- mummy 🔥
+- Spurt 🔥
+- Daring Strike 👀
+
+### Deck
+
+#### Core
+
+<CardRow>
+<SupportCard type="wit" rarity="ssr" name="Fine Motion" />
+<SupportCard type="wit" rarity="ssr" name="Nice Nature" />
+<SupportCard type="speed" rarity="ssr" name="Tokai Teio" />
+<SupportCard type="speed" rarity="ssr" name="Kitasan Black" />
+<SupportCard type="speed" rarity="ssr" name="Matikanefukukitaru" />
+</CardRow>
+3speed 2wit 1power/tazuna or 3speed 3wit as always
+
+#### Optional
+<ImageDescription>
+<template #image>
+  <SupportCard type="speed" rarity="ssr" name="Sakura Bakushin O" />
+</template>
+<template #description>
+  If you don't have Hachimi and have 3LB/MLB one
+</template>
+</ImageDescription>
+
+<ImageDescription>
+<template #image>
+  <SupportCard type="power" rarity="ssr" name="Admire Vega" />
+</template>
+<template #description>
+  For Daring Strike.
+</template>
+</ImageDescription>
+
+<ImageDescription>
+<template #image>
+  <SupportCard type="pals" rarity="any" name="Riko" />
+</template>
+<template #description>
+  If you run Taishin you must need this for stamina and mood issue.
+</template>
+</ImageDescription>

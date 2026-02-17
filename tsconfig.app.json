@@ -8,8 +8,5 @@
     "paths": {
       "@/*": ["./src/*"]
     }
-  },
-  "vueCompilerOptions": {
-    "extensions": [".vue", ".md"]
   }
 }

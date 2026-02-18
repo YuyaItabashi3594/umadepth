@@ -11,11 +11,12 @@ import LeftSide from './components/LeftSide.vue'
         <LeftSide />
       </div>
 
-      <nav>
+      <nav class="grid grid-cols-4 gap-y-4">
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
         <RouterLink to="/motivation">Motivation</RouterLink>
         <RouterLink to="/chanmi">Chanmi</RouterLink>
+        <RouterLink to="/gacha">Gacha</RouterLink>
       </nav>
       <a style="position: fixed; bottom: 20px; left: 20px;" href="https://www.buymeacoffee.com/nemunyan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
     </div>

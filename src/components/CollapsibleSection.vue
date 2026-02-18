@@ -1,32 +1,30 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    title: string;
-    defaultOpen?: boolean;
+    title?: string
+    defaultOpen?: boolean
   }>(),
   {
-    defaultOpen: false
-  }
-);
+    defaultOpen: false,
+  },
+)
 
-const isOpen = ref(props.defaultOpen);
+const isOpen = ref(props.defaultOpen)
 
 const toggle = () => {
-  isOpen.value = !isOpen.value;
-};
+  isOpen.value = !isOpen.value
+}
 </script>
 
 <template>
   <div class="collapsible-container">
     <!-- ヘッダー -->
-    <button
-      class="collapsible-header"
-      @click="toggle"
-      :aria-expanded="isOpen"
-    >
-      <span class="font-semibold text-lg">{{ props.title }}</span>
+    <button class="collapsible-header" @click="toggle" :aria-expanded="isOpen">
+      <slot name="title">
+        <span class="font-semibold text-lg">{{ props.title }}</span>
+      </slot>
       <svg
         class="w-5 h-5 transition-transform duration-200"
         :class="{ 'rotate-180': isOpen }"

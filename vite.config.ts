@@ -14,6 +14,7 @@ export default defineConfig({
       markdownItOptions: {
         breaks: true, // 単一の改行を<br>タグに変換
       },
+      exportFrontmatter: true,
     }),
     vue({
       include: [/\.vue$/, /\.md$/], // markdownファイルをvueコンポーネントとして扱う
@@ -28,7 +29,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 })

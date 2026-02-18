@@ -31,6 +31,11 @@ const router = createRouter({
       path: '/chanmi/:slug',
       name: 'chanmi_wrapper',
       component: () => import(`../views/ChanmiWrapper.vue`)
+    },
+    {
+      path: '/gacha',
+      name: 'gacha',
+      component: () => import('../views/GachaView.vue'),
     }
 
   ],

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 interface UpdateHistory {
   date: string
   title: string
@@ -7,11 +9,21 @@ interface UpdateHistory {
 const updateHistories: UpdateHistory[] = [
   {
     date: '2026-02-16',
-    title: 'release'
-  }
+    title: 'release',
+  },
+  {
+    date: '2026-03-19',
+    title: 'Pisces Cup Guide',
+  },
 ]
 
-const displayedHistories = updateHistories.slice(0, 3)
+const displayedHistories = computed(() => {
+  return [...updateHistories]
+    .sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime()
+    })
+    .slice(0, 3)
+})
 </script>
 
 <template>

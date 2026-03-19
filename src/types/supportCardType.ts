@@ -19,6 +19,8 @@ const supportCardSpeedSSR = [
   "Mayano Top Gun",
   "Silence Suzuka Story",
   "Matikanefukukitaru",
+  "Narita Top Road",
+
 ] as const;
 
 const supportCardSpeedSR = [
@@ -95,6 +97,7 @@ const supportCardGutsSSR = [
   "Mejiro Ryan",
   "Ikuno Dictus",
   "Yukino Bijin",
+  "Sakura Bakushin O",
 ] as const;
 
 const supportCardGutsSR = [
@@ -105,6 +108,7 @@ const supportCardGutsSR = [
   "Seeking the Pearl",
   "Sirius Symboli",
   "Tamamo Cross",
+  "Admire Vega",
 ] as const;
 
 const supportCardWitSSR = [
@@ -117,6 +121,7 @@ const supportCardWitSSR = [
   "Mihono Bourbon",
   "Curren Chan",
   "Narita Taishin",
+  "Nishino Flower",
 ] as const;
 
 const supportCardWitSR = [

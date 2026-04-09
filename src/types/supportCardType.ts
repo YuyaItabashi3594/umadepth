@@ -47,6 +47,7 @@ const supportCardStaminaSSR = [
   "Narita Brian",
   "Manhattan Cafe",
   "Meisho Doto",
+  "Symboli Rudolf"
 ] as const;
 
 const supportCardStaminaSR = [
@@ -122,6 +123,7 @@ const supportCardWitSSR = [
   "Curren Chan",
   "Narita Taishin",
   "Nishino Flower",
+  "Sirius Symboli",
 ] as const;
 
 const supportCardWitSR = [

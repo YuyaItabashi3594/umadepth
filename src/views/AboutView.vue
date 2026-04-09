@@ -12,6 +12,9 @@
       <li>Libra: A Final 2nd(Lost to perfect Rushing Gale)</li>
       <li>Scorpio: A Final 2nd</li>
       <li>Sagittarius: A Final 1st(Meisho Doto)</li>
+      <li>Capricone: A Final 1st(Sakura Bakushin O)</li>
+      <li>Aquarius: A Final 1st(Taiki Shuttle)</li>
+      <li>Pisces: A Final 1st(Mayano Top Gun)</li>
     </ul>
     <p>Initial UI of Vue.js is already great so I reuse them a lot lol</p>
   </div>

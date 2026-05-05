@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-layout">
     <p>IGN:ねむにゃんω</p>
     <p>Club:ReYouRawr:A twitch streamer ReYou's one</p>
     <a href="https://github.com/YuyaItabashi3594">Github</a>

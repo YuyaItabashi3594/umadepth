@@ -11,23 +11,17 @@
 <style scoped>
 h1 {
   font-weight: 500;
-  font-size: 2.6rem;
-  position: relative;
+  font-size: 1.4rem;
+  line-height: 1.2;
 }
 
 h3 {
-  font-size: 1.2rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
 }
 
 h1,
 h3 {
-  text-align: center;
-}
-
-@media (min-width: 1024px) {
-  h1,
-  h3 {
-    text-align: left;
-  }
+  text-align: left;
 }
 </style>

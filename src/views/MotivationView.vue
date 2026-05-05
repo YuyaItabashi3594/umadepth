@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="motivation">
+  <div class="page-layout">
     <p>There are <a href="#">ma</a><a href="#">ny</a> <a href="#">gui</a><a href="#">des</a> that help your uma play experience already.</p>
     <p>However,these guides are for min-maxer and F2P.</p>
     <figure>
@@ -24,15 +24,3 @@
     </ul>
   </div>
 </template>
-
-<style scoped>
-@media (min-width: 1024px) {
-  .motivation {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: start;
-  }
-}
-</style>

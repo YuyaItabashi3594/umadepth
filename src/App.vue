@@ -5,20 +5,23 @@ import LeftSide from './components/LeftSide.vue'
 
 <template>
   <header>
-    <div class="wrapper">
-      <div class="w-[400px]">
-        <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="400" />
-        <LeftSide />
-      </div>
+    <div class="header-left">
+      <img alt="Yadayada Logo" class="logo" src="@/assets/logo.png" />
+      <LeftSide />
+    </div>
 
-      <nav class="grid grid-cols-4 gap-y-4">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/motivation">Motivation</RouterLink>
-        <RouterLink to="/chanmi">Chanmi</RouterLink>
-        <RouterLink to="/gacha">Gacha</RouterLink>
-      </nav>
-      <a style="position: fixed; bottom: 20px; left: 20px;" href="https://www.buymeacoffee.com/nemunyan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 140px !important;" ></a>
+    <nav>
+      <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/about">About</RouterLink>
+      <RouterLink to="/motivation">Motivation</RouterLink>
+      <RouterLink to="/chanmi">Chanmi</RouterLink>
+      <RouterLink to="/gacha">Gacha</RouterLink>
+    </nav>
+
+    <div class="header-right">
+      <a href="https://www.buymeacoffee.com/nemunyan" target="_blank">
+        <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" class="bmc-btn" />
+      </a>
     </div>
   </header>
 
@@ -29,69 +32,65 @@ import LeftSide from './components/LeftSide.vue'
 
 <style scoped>
 header {
-  line-height: 1.5;
-  max-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  background-color: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .logo {
-  display: block;
-  margin: 0 auto 2rem;
+  height: 40px;
+  width: auto;
 }
 
 nav {
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.95rem;
+}
+
+nav a {
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
 }
 
 nav a.router-link-exact-active {
   color: var(--color-text);
+  background-color: var(--color-border);
 }
 
 nav a.router-link-exact-active:hover {
-  background-color: transparent;
+  background-color: var(--color-border);
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+.header-right {
+  display: flex;
+  align-items: center;
 }
 
-nav a:first-of-type {
-  border: 0;
+.bmc-btn {
+  height: 40px;
+  width: auto;
 }
 
 .router-view-container {
+  margin-top: 64px;
   overflow-y: auto;
-  max-height: calc(100vh - 100px);
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    flex-direction: column;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+  min-height: calc(100vh - 64px);
 }
 </style>

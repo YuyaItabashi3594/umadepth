@@ -1,7 +1,8 @@
 # Project Rules & Constraints
 
 ## General
-Always respond in Japanese 日本語で回答してください。
+- Always respond in Japanese 日本語で回答してください。
+- ファイルの編集にはEditを使ってください。serenaのreplace symbolは差分が分かりにくいため使わないでください。
 
 ## Environment Context
 - **OS**: Windows 11 (PowerShell/Command Prompt)

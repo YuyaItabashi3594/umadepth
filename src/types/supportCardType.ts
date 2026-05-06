@@ -20,7 +20,11 @@ const supportCardSpeedSSR = [
   "Silence Suzuka Story",
   "Matikanefukukitaru",
   "Narita Top Road",
-
+  "Air Shakur",
+  "Maruzensky",
+  "Seeking The Pearl",
+  "Taiki Shuttle",
+  "Tosen Jodan",
 ] as const;
 
 const supportCardSpeedSR = [
@@ -47,7 +51,9 @@ const supportCardStaminaSSR = [
   "Narita Brian",
   "Manhattan Cafe",
   "Meisho Doto",
-  "Symboli Rudolf"
+  "Symboli Rudolf",
+  "Ikuno Dictus",
+  "Mejiro Bright",
 ] as const;
 
 const supportCardStaminaSR = [
@@ -72,6 +78,11 @@ const supportCardPowerSSR = [
   "Daitaku Helios",
   "Marvelous Sunday",
   "Admire Vega",
+  "Daiwa Scarlet 2",
+  "Agnes Digital",
+  "Air Groove",
+  "Haru Urara",
+  "Kawakami Princess",
 ] as const;
 
 const supportCardPowerSR = [
@@ -99,6 +110,8 @@ const supportCardGutsSSR = [
   "Ikuno Dictus",
   "Yukino Bijin",
   "Sakura Bakushin O",
+  "Bamboo Memory",
+  "Marverous Sunday",
 ] as const;
 
 const supportCardGutsSR = [
@@ -124,6 +137,9 @@ const supportCardWitSSR = [
   "Narita Taishin",
   "Nishino Flower",
   "Sirius Symboli",
+  "Mr CB",
+  "Matikanetannhauser",
+  "Rice Shower",
 ] as const;
 
 const supportCardWitSR = [
@@ -145,6 +161,10 @@ const supportCardPals = [
   "Anshinzawa"
 ] as const;
 
+const supportCardGroup = [
+  "Sirius",
+] as const;
+
 export type SupportCardSpeedSSR = typeof supportCardSpeedSSR[number];
 export type SupportCardSpeedSR = typeof supportCardSpeedSR[number];
 export type SupportCardStaminaSSR = typeof supportCardStaminaSSR[number];
@@ -156,6 +176,7 @@ export type SupportCardGutsSR = typeof supportCardGutsSR[number];
 export type SupportCardWitSSR = typeof supportCardWitSSR[number];
 export type SupportCardWitSR = typeof supportCardWitSR[number];
 export type SupportCardPals = typeof supportCardPals[number];
+export type SupportCardGroup = typeof supportCardGroup[number];
 
 export type SupportCardName =
   | SupportCardSpeedSSR
@@ -168,7 +189,8 @@ export type SupportCardName =
   | SupportCardGutsSR
   | SupportCardWitSSR
   | SupportCardWitSR
-  | SupportCardPals;
+  | SupportCardPals
+  | SupportCardGroup
 
 export type SupportCardSpeedSSRProps = {
   type: "speed";
@@ -258,6 +280,14 @@ export type SupportCardPalsProps = {
   description?: string;
 };
 
+export type SupportCardGroupProps = {
+  type: "group";
+  rarity: "ssr";
+  name: SupportCardGroup;
+  width?: number;
+  description?: string;
+}
+
 export type SupportCardProps =
   | SupportCardSpeedSSRProps
   | SupportCardSpeedSRProps
@@ -270,3 +300,4 @@ export type SupportCardProps =
   | SupportCardWitSSRProps
   | SupportCardWitSRProps
   | SupportCardPalsProps
+  | SupportCardGroupProps

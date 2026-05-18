@@ -19,6 +19,10 @@ const updateHistories: UpdateHistory[] = [
     date: '2026-04-09',
     title: 'Aries Cup Guide',
   },
+  {
+    date: '2026-05-19',
+    title: 'Gemini 2nd Cup Guide(Taurus was skipped due to busy days...',
+  },
 ]
 
 const displayedHistories = computed(() => {

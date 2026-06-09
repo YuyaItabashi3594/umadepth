@@ -15,6 +15,8 @@
       <li>Capricone: A Final 1st(Sakura Bakushin O)</li>
       <li>Aquarius: A Final 1st(Taiki Shuttle)</li>
       <li>Pisces: A Final 1st(Mayano Top Gun)</li>
+      <li>Aries: Cooked by XOguri(70~ winrate)</li>
+      <li>Taurus2: Cooked by 2Fronts(80% winrate)</li>
     </ul>
     <p>Initial UI of Vue.js is already great so I reuse them a lot lol</p>
   </div>

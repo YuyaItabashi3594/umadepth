@@ -84,7 +84,7 @@ const getMarkdownComponent = (slug: string) => {
           <li v-for="article in sortedArticles" :key="article.slug">
             <CollapsibleSection>
               <template #title>
-                <div class="flex flex-row items-center justify-center">
+                <div class="flex flex-row items-center justify-center gap-2">
                   <img
                     :src="`/images/gacha/${article.slug}.png`"
                     alt="gacha-banner"

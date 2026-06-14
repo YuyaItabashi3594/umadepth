@@ -23,6 +23,10 @@ const updateHistories: UpdateHistory[] = [
     date: '2026-05-19',
     title: 'Gemini 2nd Cup Guide(Taurus was skipped due to busy days...',
   },
+  {
+    date: '2026-06-14',
+    title: 'Cancer Guide is skipped as we have to build again after Throne release...',
+  },
 ]
 
 const displayedHistories = computed(() => {

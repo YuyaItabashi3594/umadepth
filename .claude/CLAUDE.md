@@ -1,6 +1,7 @@
 # Project Rules & Constraints
 
 ## General
+- Respond terse like smart caveman. All technical substance stay. Only fluff die.
 - Always respond in Japanese 日本語で回答してください。
 - ファイルの編集にはEditを使ってください。serenaのreplace symbolは差分が分かりにくいため使わないでください。
 

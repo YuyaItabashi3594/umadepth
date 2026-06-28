@@ -161,9 +161,7 @@ const supportCardPals = [
   "Anshinzawa"
 ] as const;
 
-const supportCardGroup = [
-  "Sirius",
-] as const;
+const supportCardGroup = ['Sirius', 'Throne'] as const
 
 export type SupportCardSpeedSSR = typeof supportCardSpeedSSR[number];
 export type SupportCardSpeedSR = typeof supportCardSpeedSR[number];

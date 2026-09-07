@@ -37,3 +37,6 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# Editor機能のプレビュー用スクラッチファイル(自動生成)
+src/views/_editorPreview/

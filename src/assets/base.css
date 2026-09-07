@@ -33,6 +33,11 @@
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
 
+  --color-accent: #b8860b;
+  --color-accent-soft: rgba(184, 134, 11, 0.15);
+  --color-accent-hover: #96690a;
+
+  --header-height: 64px;
   --section-gap: 160px;
 }
 
@@ -47,6 +52,10 @@
 
     --color-heading: var(--vt-c-text-dark-1);
     --color-text: var(--vt-c-text-dark-2);
+
+    --color-accent: #e0a952;
+    --color-accent-soft: rgba(224, 169, 82, 0.16);
+    --color-accent-hover: #f0bc6a;
   }
 }
 

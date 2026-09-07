@@ -44,11 +44,11 @@ const displayedHistories = computed(() => {
       <h1>Welcome to Uma Depth guide!</h1>
     </div>
 
-    <section class="border rounded-md border-gray-500" style="margin-top: 40px">
+    <section class="info-card history-list">
       <ul>
         <li v-for="(history, index) in displayedHistories" :key="index">
-          <div class="">{{ history.date }}</div>
-          <div class="">{{ history.title }}</div>
+          <span class="history-date">{{ history.date }}</span>
+          <span class="history-title">{{ history.title }}</span>
         </li>
       </ul>
     </section>
@@ -71,8 +71,38 @@ h3 {
   text-align: center;
 }
 
-ul li::before {
+.history-list {
+  margin-top: 2.5rem;
+}
+
+.history-list ul {
+  margin: 0;
+}
+
+.history-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.history-list li:not(:last-child) {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.history-list li::before {
   content: '';
+}
+
+.history-date {
+  flex: 0 0 auto;
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.history-title {
+  color: var(--color-text);
 }
 
 @media (min-width: 1024px) {

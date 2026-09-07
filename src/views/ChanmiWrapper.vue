@@ -23,7 +23,7 @@ const markdownComponent = computed(() => {
 <template>
   <div>
     <div class="flex justify-center" style="margin-bottom: 40px">
-      <div class="border border-gray-500 rounded-md w-[500px] mx-auto px-2 py-1">
+      <div class="info-card w-full max-w-[500px] mx-auto">
         <ul>
           <li>⭐️ I use this Style uma so I have better info</li>
           <li>🔥 must-have</li>
@@ -48,7 +48,7 @@ const markdownComponent = computed(() => {
   margin-top: 2rem;
   margin-bottom: 1rem;
   line-height: 1.2;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid var(--color-border);
   padding-bottom: 0.5rem;
 }
 
@@ -58,7 +58,7 @@ const markdownComponent = computed(() => {
   margin-top: 1.75rem;
   margin-bottom: 0.875rem;
   line-height: 1.3;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--color-border);
   padding-bottom: 0.375rem;
 }
 
@@ -92,6 +92,7 @@ const markdownComponent = computed(() => {
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   line-height: 1.5;
-  color: #6b7280;
+  color: var(--color-text);
+  opacity: 0.7;
 }
 </style>

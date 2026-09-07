@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import LeftSide from './components/LeftSide.vue'
+
+const isDev = import.meta.env.DEV
 </script>
 
 <template>
@@ -16,10 +18,11 @@ import LeftSide from './components/LeftSide.vue'
       <RouterLink to="/motivation">Motivation</RouterLink>
       <RouterLink to="/chanmi">Chanmi</RouterLink>
       <RouterLink to="/gacha">Gacha</RouterLink>
+      <RouterLink v-if="isDev" to="/editor">Editor</RouterLink>
     </nav>
 
     <div class="header-right">
-      <a href="https://www.buymeacoffee.com/nemunyan" target="_blank">
+      <a href="https://www.buymeacoffee.com/nemunyan" target="_blank" class="bmc-link">
         <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" class="bmc-btn" />
       </a>
     </div>
@@ -36,10 +39,11 @@ header {
   top: 0;
   left: 0;
   right: 0;
-  height: 64px;
-  display: flex;
+  height: var(--header-height);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
+  gap: 1rem;
   padding: 0 1.5rem;
   background-color: var(--color-background);
   border-bottom: 1px solid var(--color-border);
@@ -60,22 +64,32 @@ header {
 nav {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 0.25rem;
   font-size: 0.95rem;
+  min-width: 0;
 }
 
 nav a {
   padding: 0.25rem 0.75rem;
   border-radius: 4px;
+  color: var(--color-text);
+  border-bottom: 2px solid transparent;
+}
+
+nav a:hover {
+  color: var(--color-accent-hover);
 }
 
 nav a.router-link-exact-active {
-  color: var(--color-text);
-  background-color: var(--color-border);
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
 }
 
 nav a.router-link-exact-active:hover {
-  background-color: var(--color-border);
+  color: var(--color-accent-hover);
+  border-bottom-color: var(--color-accent-hover);
 }
 
 .header-right {
@@ -83,14 +97,27 @@ nav a.router-link-exact-active:hover {
   align-items: center;
 }
 
+.bmc-link {
+  display: inline-flex;
+  border-radius: 8px;
+  overflow: hidden;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+
+.bmc-link:hover {
+  opacity: 1;
+}
+
 .bmc-btn {
-  height: 40px;
+  height: 36px;
   width: auto;
+  display: block;
 }
 
 .router-view-container {
-  margin-top: 64px;
+  margin-top: var(--header-height);
   overflow-y: auto;
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - var(--header-height));
 }
 </style>

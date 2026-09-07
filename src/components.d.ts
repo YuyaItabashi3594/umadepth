@@ -12,7 +12,10 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     CardRow: typeof import('./components/CardRow.vue')['default']
+    CardRowForm: typeof import('./components/editor/CardRowForm.vue')['default']
+    CollapsibleForm: typeof import('./components/editor/CollapsibleForm.vue')['default']
     CollapsibleSection: typeof import('./components/CollapsibleSection.vue')['default']
+    ComponentToolbar: typeof import('./components/editor/ComponentToolbar.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     IconCommunity: typeof import('./components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./components/icons/IconDocumentation.vue')['default']
@@ -20,11 +23,14 @@ declare module 'vue' {
     IconSupport: typeof import('./components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./components/icons/IconTooling.vue')['default']
     ImageDescription: typeof import('./components/ImageDescription.vue')['default']
+    ImageDescriptionForm: typeof import('./components/editor/ImageDescriptionForm.vue')['default']
     ImageModal: typeof import('./components/ImageModal.vue')['default']
+    ImageModalForm: typeof import('./components/editor/ImageModalForm.vue')['default']
     LeftSide: typeof import('./components/LeftSide.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SupportCard: typeof import('./components/SupportCard.vue')['default']
+    SupportCardForm: typeof import('./components/editor/SupportCardForm.vue')['default']
     TheWelcome: typeof import('./components/TheWelcome.vue')['default']
     WelcomeItem: typeof import('./components/WelcomeItem.vue')['default']
   }

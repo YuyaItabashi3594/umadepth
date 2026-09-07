@@ -36,8 +36,16 @@ const router = createRouter({
       path: '/gacha',
       name: 'gacha',
       component: () => import('../views/GachaView.vue'),
-    }
-
+    },
+    ...(import.meta.env.DEV
+      ? [
+          {
+            path: '/editor',
+            name: 'editor',
+            component: () => import('../views/EditorView.vue'),
+          },
+        ]
+      : []),
   ],
 })
 

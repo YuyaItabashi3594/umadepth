@@ -1,8 +1,22 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { ref, watch } from 'vue'
+import { RouterLink, RouterView, useRoute } from 'vue-router'
 import LeftSide from './components/LeftSide.vue'
 
 const isDev = import.meta.env.DEV
+
+// md未満はナビが横スクロールになるので、現在ページのリンクを表示領域内に入れる
+const route = useRoute()
+const navRef = ref<HTMLElement | null>(null)
+watch(
+  () => route.path,
+  () => {
+    navRef.value
+      ?.querySelector('.router-link-active')
+      ?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+  },
+  { flush: 'post' },
+)
 </script>
 
 <template>
@@ -12,7 +26,7 @@ const isDev = import.meta.env.DEV
       <LeftSide />
     </div>
 
-    <nav>
+    <nav ref="navRef">
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/about">About</RouterLink>
       <RouterLink to="/motivation">Motivation</RouterLink>
@@ -119,5 +133,57 @@ nav a.router-link-exact-active:hover {
   margin-top: var(--header-height);
   overflow-y: auto;
   min-height: calc(100vh - var(--header-height));
+}
+
+/* md未満: 1段目にロゴ+タイトル+BMC、2段目にナビを横スクロールで並べる */
+@media (max-width: 767px) {
+  header {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 56px 44px;
+    grid-template-areas:
+      'left right'
+      'nav nav';
+    gap: 0 0.75rem;
+    padding: 0 1rem;
+  }
+
+  .header-left {
+    grid-area: left;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .header-right {
+    grid-area: right;
+  }
+
+  .logo {
+    height: 28px;
+  }
+
+  .bmc-btn {
+    height: 28px;
+  }
+
+  nav {
+    grid-area: nav;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+    height: 100%;
+    margin: 0 -1rem;
+    padding: 0 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  nav a {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
 }
 </style>

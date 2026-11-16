@@ -44,7 +44,7 @@ const getZodiacInfo = (slug: string) => {
 <style scoped>
 .chanmi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 1rem;
   margin-top: 1.5rem;
 }
@@ -69,10 +69,13 @@ const getZodiacInfo = (slug: string) => {
     background-color 0.15s;
 }
 
-.chanmi-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-accent);
-  background-color: var(--color-accent-soft);
+/* タッチ端末でhover状態が残らないようhover可能なデバイスに限定 */
+@media (hover: hover) {
+  .chanmi-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-accent);
+    background-color: var(--color-accent-soft);
+  }
 }
 
 .chanmi-emoji {

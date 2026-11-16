@@ -41,6 +41,13 @@
   --section-gap: 160px;
 }
 
+/* md未満はヘッダーを2段(ロゴ行+ナビ行)にするので高さを広げる */
+@media (max-width: 767px) {
+  :root {
+    --header-height: 100px;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --color-background: var(--vt-c-black);

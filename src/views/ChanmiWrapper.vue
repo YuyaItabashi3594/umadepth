@@ -21,7 +21,7 @@ const markdownComponent = computed(() => {
 </script>
 
 <template>
-  <div>
+  <div class="md-content">
     <div class="flex justify-center" style="margin-bottom: 40px">
       <div class="info-card w-full max-w-[500px] mx-auto">
         <ul>
@@ -39,60 +39,3 @@ const markdownComponent = computed(() => {
     </div>
   </div>
 </template>
-
-<style scoped>
-/* Markdown見出しスタイル */
-:deep(h1) {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  line-height: 1.2;
-  border-bottom: 2px solid var(--color-border);
-  padding-bottom: 0.5rem;
-}
-
-:deep(h2) {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-top: 1.75rem;
-  margin-bottom: 0.875rem;
-  line-height: 1.3;
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: 0.375rem;
-}
-
-:deep(h3) {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
-  line-height: 1.4;
-}
-
-:deep(h4) {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-top: 1.25rem;
-  margin-bottom: 0.625rem;
-  line-height: 1.4;
-}
-
-:deep(h5) {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-  line-height: 1.5;
-}
-
-:deep(h6) {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-  line-height: 1.5;
-  color: var(--color-text);
-  opacity: 0.7;
-}
-</style>

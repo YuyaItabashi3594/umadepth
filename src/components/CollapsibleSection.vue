@@ -26,7 +26,7 @@ const toggle = () => {
         <span class="font-semibold text-lg">{{ props.title }}</span>
       </slot>
       <svg
-        class="w-5 h-5 transition-transform duration-200"
+        class="w-5 h-5 shrink-0 transition-transform duration-200"
         :class="{ 'rotate-180': isOpen }"
         fill="none"
         stroke="currentColor"
@@ -78,5 +78,16 @@ const toggle = () => {
 .collapsible-content {
   padding: 1rem;
   border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 767px) {
+  .collapsible-header {
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .collapsible-content {
+    padding: 0.75rem;
+  }
 }
 </style>

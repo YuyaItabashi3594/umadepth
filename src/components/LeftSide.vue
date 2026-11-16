@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="">
+  <div class="min-w-0">
     <h1>Uma Depth Guide</h1>
     <h3>Guide for oshi/non-meta enjoyers</h3>
   </div>
@@ -23,5 +23,18 @@ h3 {
 h1,
 h3 {
   text-align: left;
+}
+
+@media (max-width: 767px) {
+  h1 {
+    font-size: 1rem;
+  }
+
+  h1,
+  h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 </style>

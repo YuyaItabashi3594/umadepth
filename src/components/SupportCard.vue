@@ -19,7 +19,8 @@ const handleImageError = () => {
 
 </script>
 <template>
-  <div :style="{ width: `${props.width}px` }">
+  <!-- 狭い画面ではCardRowのセル幅に合わせて縮む -->
+  <div :style="{ width: `${props.width}px`, maxWidth: '100%' }">
     <figure class="image">
       <img :src="currentImagePath" :alt="props.name" @error="handleImageError" />
       <figcaption v-if="props.description">{{ props.description }}</figcaption>

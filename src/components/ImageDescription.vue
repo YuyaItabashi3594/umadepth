@@ -12,11 +12,15 @@ withDefaults(
 </script>
 
 <template>
-  <div class="flex items-center justify-start border p-2 rounded-md" :style="{ gap: `${gap}px` }">
+  <!-- sm未満は画像→説明の縦並び、sm以上は横並び -->
+  <div
+    class="flex flex-col items-start sm:flex-row sm:items-center justify-start border p-2 rounded-md"
+    :style="{ gap: `${gap}px` }"
+  >
     <div class="image-section" :style="{ width: imageWidth }">
       <slot name="image" />
     </div>
-    <div class="">
+    <div class="min-w-0">
       <slot name="description" />
     </div>
   </div>
@@ -26,5 +30,6 @@ withDefaults(
 
 .image-section {
   flex-shrink: 0;
+  max-width: 100%;
 }
 </style>

@@ -58,7 +58,7 @@ const displayedHistories = computed(() => {
 <style scoped>
 h1 {
   font-weight: 500;
-  font-size: 2.6rem;
+  font-size: clamp(1.75rem, 1.2rem + 2.75vw, 2.6rem);
   position: relative;
 }
 
@@ -103,6 +103,14 @@ h3 {
 
 .history-title {
   color: var(--color-text);
+}
+
+/* sm未満は日付→タイトルの2行表示 */
+@media (max-width: 639px) {
+  .history-list li {
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
 @media (min-width: 1024px) {

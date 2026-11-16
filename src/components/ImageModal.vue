@@ -35,7 +35,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div>
+  <div class="max-w-full">
     <!-- サムネイル画像 -->
     <img
       :src="props.src"
@@ -57,20 +57,20 @@ onUnmounted(() => {
           class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
           @click="closeModal"
         >
+          <!-- 閉じるボタン(画像サイズに関わらず画面右上に固定) -->
+          <button
+            class="fixed top-4 right-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-black/50 text-white hover:text-gray-300 text-2xl font-bold"
+            @click.stop="closeModal"
+            aria-label="閉じる"
+          >
+            ✕
+          </button>
+
           <!-- モーダルコンテンツ -->
           <div
             class="relative max-w-7xl max-h-[90vh]"
             @click.stop
           >
-            <!-- 閉じるボタン -->
-            <button
-              class="absolute -top-10 right-0 text-white hover:text-gray-300 text-2xl font-bold"
-              @click="closeModal"
-              aria-label="閉じる"
-            >
-              ✕
-            </button>
-
             <!-- 拡大画像 -->
             <img
               :src="props.src"

@@ -91,13 +91,13 @@ export function buildGachaBodyTemplate(gachaField: string): string {
 
 // 既存chanmi記事(leo2/gemini2等)に共通する構成をテンプレ化
 export const CHANMI_BODY_TEMPLATE = `## Course
-{{コース 例: Tokyo,Turf,1600m(Mile)}}
-{{季節,天候,馬場 例: Spring,☀,Firm}}
+【コース 例: Tokyo,Turf,1600m(Mile)】
+【季節,天候,馬場 例: Spring,☀,Firm】
 
 ## General
 
 ### Stats
-{{ステータス目安}}
+【ステータス目安】
 
 ### Skills
 -

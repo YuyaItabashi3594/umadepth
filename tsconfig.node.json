@@ -6,10 +6,13 @@
     "cypress.config.*",
     "nightwatch.conf.*",
     "playwright.config.*",
-    "eslint.config.*"
+    "eslint.config.*",
+    "scripts/**/*.ts"
   ],
   "compilerOptions": {
     "noEmit": true,
+    // scripts/ は node --experimental-strip-types で直接実行するため .ts 拡張子付きでimportする
+    "allowImportingTsExtensions": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
 
     "module": "ESNext",

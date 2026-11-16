@@ -40,3 +40,8 @@ __screenshots__/
 
 # Editor機能のプレビュー用スクラッチファイル(自動生成)
 src/views/_editorPreview/
+
+# 衣装データのSQLiteキャッシュ(npm run data:sync で再構築できる。seed/はコミットする)
+data/*.db
+data/*.db-wal
+data/*.db-shm

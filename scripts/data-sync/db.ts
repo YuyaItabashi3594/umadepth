@@ -89,6 +89,41 @@ CREATE TABLE IF NOT EXISTS support_card_aliases (
   support_card_id  INTEGER NOT NULL REFERENCES support_cards(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS skills (
+  id                INTEGER PRIMARY KEY,      -- 200512。継承固有はGameToraのgene_version.id(9xxxxx)
+  name_en           TEXT,                     -- 公式英語名。グローバル版未実装で訳が無ければNULL
+  name_en_gametora  TEXT NOT NULL,            -- GameTora独自訳(enname)。記事の名前引き用
+  name_jp           TEXT NOT NULL,
+  desc_en           TEXT,                     -- 公式英語説明。無ければNULL
+  desc_jp           TEXT,                     -- 継承固有はデータに無いのでNULL
+  rarity            INTEGER NOT NULL,         -- 1白 2金 3-5固有 6進化 (GameToraの値そのまま)
+  cost              INTEGER,                  -- SP。固有/進化はNULL
+  icon_id           INTEGER NOT NULL,
+  is_global         INTEGER NOT NULL,         -- GameToraのunreleasedに'en'が無ければ1
+  parent_skill_id   INTEGER,                  -- 継承固有の元スキル
+  raw_json          TEXT NOT NULL,
+  fetched_at        TEXT NOT NULL
+);
+
+-- 衣装/サポカのgametora_jsonから毎回作り直す派生テーブル
+CREATE TABLE IF NOT EXISTS outfit_skills (
+  outfit_id  INTEGER NOT NULL REFERENCES outfits(id) ON DELETE CASCADE,
+  skill_id   INTEGER NOT NULL REFERENCES skills(id),
+  kind       TEXT NOT NULL CHECK (kind IN ('unique', 'innate', 'awakening', 'event')),
+  sort       INTEGER NOT NULL,
+  PRIMARY KEY (outfit_id, kind, skill_id)
+);
+CREATE INDEX IF NOT EXISTS idx_outfit_skills_skill ON outfit_skills(skill_id);
+
+CREATE TABLE IF NOT EXISTS support_card_skills (
+  support_card_id  INTEGER NOT NULL REFERENCES support_cards(id) ON DELETE CASCADE,
+  skill_id         INTEGER NOT NULL REFERENCES skills(id),
+  kind             TEXT NOT NULL CHECK (kind IN ('hint', 'event')),
+  sort             INTEGER NOT NULL,
+  PRIMARY KEY (support_card_id, kind, skill_id)
+);
+CREATE INDEX IF NOT EXISTS idx_support_card_skills_skill ON support_card_skills(skill_id);
+
 CREATE TABLE IF NOT EXISTS api_fetch_log (
   endpoint     TEXT PRIMARY KEY,
   fetched_at   TEXT NOT NULL,

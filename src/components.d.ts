@@ -24,6 +24,7 @@ declare module 'vue' {
     LeftSide: typeof import('./components/LeftSide.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SkillChip: typeof import('./components/SkillChip.vue')['default']
     SupportCard: typeof import('./components/SupportCard.vue')['default']
     SupportCardForm: typeof import('./components/editor/SupportCardForm.vue')['default']
   }

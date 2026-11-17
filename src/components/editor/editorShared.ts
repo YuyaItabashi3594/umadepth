@@ -1,4 +1,5 @@
 import { aliasOf } from '@/utils/supportCardIndex'
+import { courseLinesOf } from '@/utils/championsMeeting'
 
 // 画面に出す名前。記事に書くタグ名(SupportCard等)は変えない
 export const COMPONENT_LABELS = {
@@ -191,6 +192,14 @@ export const CHANMI_BODY_TEMPLATE = `## Course
 
 ### My uma
 `
+
+// 「## Course」直後の2行(コース / 季節,天候,馬場)を公式のレース条件で置き換える。見出しが無ければ先頭に足す
+export function fillChanmiCourse(body: string, conditions: string): string {
+  const section = `## Course\n${courseLinesOf(conditions).join('\n')}\n`
+  const match = /^## Course\n(?:(?!#)[^\n]+\n){0,2}/m.exec(body)
+  if (match?.index === undefined) return `${section}\n${body}`
+  return body.slice(0, match.index) + section + body.slice(match.index + match[0].length)
+}
 
 export function parseFrontmatter(content: string): { frontmatter: Record<string, string>; body: string } {
   const match = content.match(/^---\n([\s\S]*?)\n---\n\n?/)

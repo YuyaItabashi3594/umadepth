@@ -124,6 +124,28 @@ CREATE TABLE IF NOT EXISTS support_card_skills (
 );
 CREATE INDEX IF NOT EXISTS idx_support_card_skills_skill ON support_card_skills(skill_id);
 
+-- umapyoiの公式ニュース(英語版+日本版)のチャンミ告知から作る。1行 = 1開催(シリーズ × 回数)。
+-- 英語版は日本版と同じannounce_idで告知を出すので、それで突き合わせる
+CREATE TABLE IF NOT EXISTS champions_meetings (
+  series             TEXT NOT NULL,           -- 'leo' / 'mile' (src/utils/championsMeeting.ts の ZODIACS/CATEGORIES.key)
+  round              INTEGER NOT NULL,        -- 同じシリーズの何回目か
+  start_at           TEXT,                    -- グローバル版Round 1開始(ISO, UTC)。開催中告知の日時 > 予告本文の日付
+  jp_start_at        TEXT,                    -- 日本版の開催(ISO)。日本版の開催中告知 > 予告の日時
+  conditions         TEXT,                    -- 'Tokyo / Dirt / 1,600m (Mile) / Left-Handed / Winter / Snowy / Soft'
+  conditions_lang    TEXT CHECK (conditions_lang IN ('en', 'ja')),  -- ja = 日本版の対象レースを英訳したもの
+  en_here_id         INTEGER,                 -- 英語版 開催中告知(〜 is here!)
+  en_coming_id       INTEGER,                 -- 英語版 予告(〜 is coming)
+  jp_here_id         INTEGER,                 -- 日本版 開催中告知(〜開催！)
+  jp_coming_id       INTEGER,                 -- 日本版 予告(〜開催予定！)
+  banner_url         TEXT,                    -- 使うバナーの元URL(英語版開催中 > 英語版予告 > 日本版開催中 > 日本版予告)
+  banner_kind        TEXT CHECK (banner_kind IN ('here', 'coming')),
+  banner_lang        TEXT CHECK (banner_lang IN ('en', 'ja')),
+  banner_path        TEXT,                    -- 取得済みならpublic配下のパス
+  banner_source      TEXT,                    -- banner_pathをどのURLから作ったか。banner_urlと違えば取り直す
+  fetched_at         TEXT NOT NULL,
+  PRIMARY KEY (series, round)
+);
+
 CREATE TABLE IF NOT EXISTS api_fetch_log (
   endpoint     TEXT PRIMARY KEY,
   fetched_at   TEXT NOT NULL,
@@ -136,6 +158,9 @@ export function openDb(): DatabaseSync {
   fs.mkdirSync(path.dirname(DB_PATH), { recursive: true })
   const db = new DatabaseSync(DB_PATH)
   db.exec('PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL;')
+  // 旧版(星座×回数)のチャンミ表は列構成が違う。ニュースからいつでも作り直せるので捨てて作り直す
+  const cmColumns = db.prepare('PRAGMA table_info(champions_meetings)').all() as { name: string }[]
+  if (cmColumns.length > 0 && !cmColumns.some((c) => c.name === 'series')) db.exec('DROP TABLE champions_meetings')
   db.exec(SCHEMA)
   return db
 }

@@ -2,6 +2,8 @@
 import { ref, reactive, computed, watch, onBeforeUnmount } from 'vue'
 import ComponentToolbar from '@/components/editor/ComponentToolbar.vue'
 import GachaBannerPicker from '@/components/editor/GachaBannerPicker.vue'
+import ChanmiEventPicker from '@/components/editor/ChanmiEventPicker.vue'
+import { chanmiSlugOf, type ChampionsMeeting } from '@/utils/championsMeeting'
 import MarkdownEditor from '@/components/editor/markdown/MarkdownEditor.vue'
 import BlockEditDialog from '@/components/editor/markdown/BlockEditDialog.vue'
 import type { ComponentBlock } from '@/components/editor/markdown/componentBlocks'
@@ -13,6 +15,7 @@ import {
   buildGachaBodyTemplate,
   CHANMI_BODY_TEMPLATE,
   PREVIEW_FRONTMATTER_MESSAGE,
+  fillChanmiCourse,
 } from '@/components/editor/editorShared'
 
 type Category = 'gacha' | 'chanmi'
@@ -54,13 +57,28 @@ const onBannerPicked = (label: string) => {
   if (!frontmatter.gacha?.trim()) frontmatter.gacha = label
 }
 
-// 既存記事の構成に沿ったテンプレをbodyの初期状態として差し込む
+// 新規chanmi記事で選んだ開催(公式告知の開催一覧から)
+const selectedMeeting = ref<ChampionsMeeting | null>(null)
+
+// 既存記事の構成に沿ったテンプレをbodyの初期状態として差し込む(開催を選んでいればコース欄も埋める)
 const applyTemplate = () => {
-  body.value =
-    category.value === 'gacha' ? buildGachaBodyTemplate(frontmatter.gacha ?? '') : CHANMI_BODY_TEMPLATE
+  if (category.value === 'gacha') {
+    body.value = buildGachaBodyTemplate(frontmatter.gacha ?? '')
+    return
+  }
+  const conditions = selectedMeeting.value?.conditions
+  body.value = conditions ? fillChanmiCourse(CHANMI_BODY_TEMPLATE, conditions) : CHANMI_BODY_TEMPLATE
+}
+
+// slugは記事一覧のバナー/開催日と紐づく規則(leo2 = Leo 2回目)で決まるので自動入力する。本文はコース欄だけ書き換える
+const onMeetingPicked = (meeting: ChampionsMeeting) => {
+  selectedMeeting.value = meeting
+  newSlug.value = chanmiSlugOf(meeting.series, meeting.round)
+  if (meeting.conditions) body.value = fillChanmiCourse(body.value, meeting.conditions)
 }
 
 const resetForm = () => {
+  selectedMeeting.value = null
   Object.assign(frontmatter, emptyGachaFrontmatter())
   scriptPrefix.value = ''
   newSlug.value = ''
@@ -239,6 +257,10 @@ const save = async () => {
         <input v-model="newSlug" type="text" placeholder="gachaなら日付(2026-07-01)、chanmiなら任意のslug" />
       </label>
     </div>
+
+    <section v-if="category === 'chanmi' && mode === 'new'" class="info-card">
+      <ChanmiEventPicker :existing-slugs="existingSlugs" :selected="selectedMeeting" @select="onMeetingPicked" />
+    </section>
 
     <section v-if="category === 'gacha'" class="info-card gacha-meta">
       <GachaBannerPicker v-model="frontmatter.banner!" :fallback-src="gachaFallbackSrc" @picked="onBannerPicked" />

@@ -1,23 +1,17 @@
-import { supportCardCatalog, supportCardGroupNames, type CardRarity } from '@/types/supportCardType'
+import { aliasOf } from '@/utils/supportCardIndex'
 
-export const CARD_TYPE_OPTIONS = ['speed', 'stamina', 'power', 'guts', 'wit', 'pals', 'group'] as const
-export type CardTypeOption = (typeof CARD_TYPE_OPTIONS)[number]
+// 画面に出す名前。記事に書くタグ名(SupportCard等)は変えない
+export const COMPONENT_LABELS = {
+  supportcard: 'サポートカード',
+  cardrow: 'カード並び',
+  imagedescription: '画像＋説明文',
+  collapsible: '折りたたみ',
+  imagemodal: '拡大画像',
+} as const
 
-export function getRarityOptions(type: string): CardRarity[] {
-  if (type === 'group') return ['ssr']
-  if (type === 'pals') return ['any']
-  if (type in supportCardCatalog) return ['ssr', 'sr']
-  return []
-}
-
-export function getNameOptions(type: string, rarity: string): readonly string[] {
-  if (type === 'group') return supportCardGroupNames
-  const rarityMap = supportCardCatalog[type as keyof typeof supportCardCatalog]
-  if (!rarityMap) return []
-  return rarityMap[rarity as CardRarity] ?? []
-}
-
+// <SupportCard>1枚分。idがあれば :id 形式、無ければ旧形式(type/rarity/name)で書き出す
 export interface SupportCardData {
+  id?: number
   type: string
   rarity: string
   name: string
@@ -29,12 +23,25 @@ export function emptySupportCardData(): SupportCardData {
   return { type: '', rarity: '', name: '' }
 }
 
+export const isSupportCardSelected = (card: SupportCardData) =>
+  card.id !== undefined || Boolean(card.type && card.rarity && card.name)
+
+// 一覧から選んだカード。通称が登録済みなら記事の既存の書き方(type/rarity/name)に揃え、未登録なら :id で書く
+export function supportCardDataFromId(id: number, name: string, base?: SupportCardData): SupportCardData {
+  const keep = { width: base?.width, description: base?.description }
+  const alias = aliasOf(id)
+  return alias ? { ...alias, ...keep } : { id, type: '', rarity: '', name, ...keep }
+}
+
 function escapeAttr(value: string): string {
   return value.replace(/"/g, '&quot;')
 }
 
 export function buildSupportCardTag(card: SupportCardData): string {
-  const attrs = [`type="${card.type}"`, `rarity="${card.rarity}"`, `name="${escapeAttr(card.name)}"`]
+  const attrs =
+    card.id !== undefined
+      ? [`:id="${card.id}"`, `name="${escapeAttr(card.name)}"`]
+      : [`type="${card.type}"`, `rarity="${card.rarity}"`, `name="${escapeAttr(card.name)}"`]
   if (card.width) attrs.push(`:width="${card.width}"`)
   if (card.description) attrs.push(`description="${escapeAttr(card.description)}"`)
   return `<SupportCard ${attrs.join(' ')} />`
@@ -42,7 +49,7 @@ export function buildSupportCardTag(card: SupportCardData): string {
 
 export function buildCardRowSnippet(columns: number | null, cards: SupportCardData[]): string {
   const inner = cards
-    .filter((c) => c.type && c.rarity && c.name)
+    .filter(isSupportCardSelected)
     .map((c) => `  ${buildSupportCardTag(c)}`)
     .join('\n')
   const openTag = columns ? `<CardRow :columns="${columns}">` : '<CardRow>'
@@ -53,12 +60,23 @@ export function buildImageModalSnippet(src: string, alt: string, widthPx: number
   return `<ImageModal class="w-[${widthPx}px]" src="${src}" alt="${escapeAttr(alt)}" />`
 }
 
+// 既存記事に合わせてtemplate内は2スペース字下げ(複数行でも各行に付ける)
+const indent = (text: string) =>
+  text
+    .split('\n')
+    .map((line) => (line ? `  ${line}` : line))
+    .join('\n')
+
 export function buildImageDescriptionSnippet(imageSnippet: string, description: string): string {
-  return `<ImageDescription>\n<template #image>\n  ${imageSnippet}\n</template>\n<template #description>\n  ${description}\n</template>\n</ImageDescription>`
+  return `<ImageDescription>\n<template #image>\n${indent(imageSnippet)}\n</template>\n<template #description>\n${indent(description)}\n</template>\n</ImageDescription>`
+}
+
+export function buildCollapsibleOpenTag(title: string): string {
+  return `<CollapsibleSection title="${escapeAttr(title)}">`
 }
 
 export function buildCollapsibleSnippet(title: string, content: string): string {
-  return `<CollapsibleSection title="${escapeAttr(title)}">\n${content}\n</CollapsibleSection>`
+  return `${buildCollapsibleOpenTag(title)}\n${content}\n</CollapsibleSection>`
 }
 
 export const GACHA_FRONTMATTER_FIELDS = [
@@ -74,8 +92,13 @@ export const GACHA_FRONTMATTER_FIELDS = [
   { key: 'meSupport', label: 'me support' },
 ] as const
 
+// banner: ガチャ一覧の見出しに出す目玉の画像パス。エディタでは一覧から選ぶので、上の文字入力欄には含めない。
+// 空なら従来どおり public/images/gacha/{slug}.png を表示する
+// Editor → プレビューiframe へfrontmatterを送るpostMessageの種別
+export const PREVIEW_FRONTMATTER_MESSAGE = 'umadepth-editor-frontmatter'
+
 export function emptyGachaFrontmatter(): Record<string, string> {
-  return Object.fromEntries(GACHA_FRONTMATTER_FIELDS.map((f) => [f.key, '']))
+  return { ...Object.fromEntries(GACHA_FRONTMATTER_FIELDS.map((f) => [f.key, ''])), banner: '' }
 }
 
 // 既存gacha記事は「### {引いたウマ/カード名}」の見出しを並べる構成なので、

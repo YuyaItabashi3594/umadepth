@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import type { SupportCardProps } from '@/types/supportCardType';
-import type { SupportCardAliasMap } from '@/types/supportCardEntryType';
-import supportCardAliases from '@/data/supportCardAliases.json';
+import { aliasKeyOf, resolveSupportCard, type SupportCardRef } from '@/utils/supportCardIndex';
 
+// rarityの既定値は旧形式(type/rarity/name)で省略されたとき用。:id指定では使わない
 const props = withDefaults(
   defineProps<SupportCardProps>(),
   {
@@ -13,21 +13,24 @@ const props = withDefaults(
 );
 
 const FALLBACK_IMAGE = '/images/Agemasen.jpg';
-const aliases = supportCardAliases as SupportCardAliasMap;
 
-// 記事の type/rarity/name を data/seed/support_card_aliases.json 経由でカードidに解決する
-const aliasKey = computed(() => `${props.type}/${props.rarity}/${props.name}`);
-const card = computed(() => aliases[aliasKey.value]);
+// :id ならそのまま、旧形式は data/seed/support_card_aliases.json の通称経由でカードを引く。
+// propsはunion型で id を直接参照できないので、参照用に広げた型で受ける
+const cardRef = props as SupportCardRef;
+const card = computed(() =>
+  resolveSupportCard(cardRef.id !== undefined ? { id: cardRef.id } : { type: cardRef.type, rarity: cardRef.rarity, name: cardRef.name }),
+);
 if (import.meta.env.DEV && !card.value) {
+  const what = cardRef.id !== undefined ? `id ${cardRef.id}` : aliasKeyOf(cardRef);
   console.warn(
-    `[SupportCard] 未登録のカード: ${aliasKey.value} (data/seed/support_card_aliases.json に追加して npm run data:sync -- supports --export-only)`,
+    `[SupportCard] 未登録のカード: ${what} (旧形式なら data/seed/support_card_aliases.json に追加して npm run data:sync -- supports --export-only)`,
   );
 }
 
 const imageFailed = ref(false);
 const imageSrc = computed(() => (!imageFailed.value && card.value?.image) || FALLBACK_IMAGE);
 const iconSrc = computed(() => (card.value?.type ? `/images/support-cards/types/${card.value.type}.png` : null));
-const altText = computed(() => [props.name, card.value?.title].filter(Boolean).join(' '));
+const altText = computed(() => [props.name ?? card.value?.name, card.value?.title].filter(Boolean).join(' '));
 </script>
 <template>
   <!-- 狭い画面ではCardRowのセル幅に合わせて縮む -->

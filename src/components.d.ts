@@ -11,21 +11,28 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BlockEditDialog: typeof import('./components/editor/markdown/BlockEditDialog.vue')['default']
+    BlockPreview: typeof import('./components/editor/markdown/BlockPreview.vue')['default']
     CardRow: typeof import('./components/CardRow.vue')['default']
     CardRowForm: typeof import('./components/editor/CardRowForm.vue')['default']
     CollapsibleForm: typeof import('./components/editor/CollapsibleForm.vue')['default']
     CollapsibleSection: typeof import('./components/CollapsibleSection.vue')['default']
     ComponentToolbar: typeof import('./components/editor/ComponentToolbar.vue')['default']
+    GachaBannerPicker: typeof import('./components/editor/GachaBannerPicker.vue')['default']
     GachaTierTable: typeof import('./components/GachaTierTable.vue')['default']
     ImageDescription: typeof import('./components/ImageDescription.vue')['default']
     ImageDescriptionForm: typeof import('./components/editor/ImageDescriptionForm.vue')['default']
     ImageModal: typeof import('./components/ImageModal.vue')['default']
     ImageModalForm: typeof import('./components/editor/ImageModalForm.vue')['default']
     LeftSide: typeof import('./components/LeftSide.vue')['default']
+    MarkdownEditor: typeof import('./components/editor/markdown/MarkdownEditor.vue')['default']
+    OutfitPicker: typeof import('./components/editor/OutfitPicker.vue')['default']
+    PreviewImagePart: typeof import('./components/editor/markdown/PreviewImagePart.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SkillChip: typeof import('./components/SkillChip.vue')['default']
     SupportCard: typeof import('./components/SupportCard.vue')['default']
     SupportCardForm: typeof import('./components/editor/SupportCardForm.vue')['default']
+    SupportCardPicker: typeof import('./components/editor/SupportCardPicker.vue')['default']
   }
 }

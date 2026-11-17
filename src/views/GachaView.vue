@@ -5,6 +5,7 @@ interface MarkdownModule {
   default: any
   date: string
   gacha: string
+  banner?: string // 目玉のウマ娘/サポカの画像パス。未設定の記事は /images/gacha/{slug}.png
   lowUma: string
   lowSupport: string
   medUma: string
@@ -30,6 +31,7 @@ const articles = computed(() => {
         frontmatter: {
           date: module.date,
           gacha: module.gacha,
+          banner: module.banner,
           lowUma: module.lowUma,
           lowSupport: module.lowSupport,
           medUma: module.medUma,
@@ -85,7 +87,7 @@ const getMarkdownComponent = (slug: string) => {
               <template #title>
                 <div class="flex flex-row items-center justify-start gap-2 min-w-0">
                   <img
-                    :src="`/images/gacha/${article.slug}.png`"
+                    :src="article.frontmatter.banner || `/images/gacha/${article.slug}.png`"
                     alt="gacha-banner"
                     class="w-[60px] shrink-0"
                   />

@@ -5,7 +5,7 @@ import CardRowForm from './CardRowForm.vue'
 import ImageDescriptionForm from './ImageDescriptionForm.vue'
 import CollapsibleForm from './CollapsibleForm.vue'
 import ImageModalForm from './ImageModalForm.vue'
-import { emptySupportCardData, type SupportCardData } from './editorShared'
+import { COMPONENT_LABELS, emptySupportCardData, type SupportCardData } from './editorShared'
 
 const props = defineProps<{ slug: string; getSelectedText: () => string }>()
 const emit = defineEmits<{ insert: [string] }>()
@@ -59,11 +59,12 @@ const confirmInsert = () => {
 <template>
   <div class="component-toolbar">
     <div class="buttons">
-      <button type="button" @click="openPanel('supportcard')">SupportCard</button>
-      <button type="button" @click="openPanel('cardrow')">CardRow</button>
-      <button type="button" @click="openPanel('imagedescription')">ImageDescription</button>
-      <button type="button" @click="openPanel('collapsible')">CollapsibleSection</button>
-      <button type="button" @click="openPanel('imagemodal')">ImageModal</button>
+      <span class="buttons-label">挿入:</span>
+      <button type="button" @click="openPanel('supportcard')">{{ COMPONENT_LABELS.supportcard }}</button>
+      <button type="button" @click="openPanel('cardrow')">{{ COMPONENT_LABELS.cardrow }}</button>
+      <button type="button" @click="openPanel('imagedescription')">{{ COMPONENT_LABELS.imagedescription }}</button>
+      <button type="button" @click="openPanel('collapsible')">{{ COMPONENT_LABELS.collapsible }}</button>
+      <button type="button" @click="openPanel('imagemodal')">{{ COMPONENT_LABELS.imagemodal }}</button>
     </div>
 
     <div v-if="activePanel" class="panel">
@@ -102,6 +103,12 @@ const confirmInsert = () => {
   gap: 0.5rem;
   padding: 0.75rem;
   background-color: var(--color-background-mute);
+}
+
+.buttons-label {
+  align-self: center;
+  font-size: 0.8rem;
+  opacity: 0.7;
 }
 
 .buttons button {

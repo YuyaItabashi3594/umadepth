@@ -2,16 +2,17 @@ import fs from 'node:fs'
 import path from 'node:path'
 import type { DatabaseSync } from 'node:sqlite'
 import type {
-  SupportCardAliasMap,
   SupportCardEntry,
+  SupportCardIndexEntry,
+  SupportCardIndexFile,
   SupportCardKind,
   SupportCardRarity,
 } from '../../src/types/supportCardEntryType.ts'
 import { ROOT } from './db.ts'
 
 const OUTPUT_PATH = path.join(ROOT, 'src', 'data', 'supportCards.json')
-// 記事内の<SupportCard>は数十枚しか使わないので、全件(256KB)ではなく通称分だけの軽量版を別に出す
-const ALIAS_OUTPUT_PATH = path.join(ROOT, 'src', 'data', 'supportCardAliases.json')
+// 記事ページでは全件(256KB)は重いので、<SupportCard>の表示に必要な項目だけの軽量版を別に出す
+const INDEX_OUTPUT_PATH = path.join(ROOT, 'src', 'data', 'supportCardIndex.json')
 
 const RARITIES: Record<number, SupportCardRarity> = { 1: 'r', 2: 'sr', 3: 'ssr' }
 // GameToraのtype表記 → サイト内のCardType
@@ -89,13 +90,25 @@ export function exportSupportCards(db: DatabaseSync) {
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(entries, null, 2) + '\n', 'utf-8')
   console.log(`[export] ${path.relative(ROOT, OUTPUT_PATH)}: ${entries.length}件`)
 
-  const aliasMap: SupportCardAliasMap = {}
-  for (const e of entries) {
-    for (const alias of e.aliases) {
-      aliasMap[alias] = { id: e.id, rarity: e.rarity, type: e.type, image: e.image, title: e.title.en ?? e.title.jp }
-    }
-  }
-  const sortedAliasMap = Object.fromEntries(Object.entries(aliasMap).sort(([a], [b]) => a.localeCompare(b)))
-  fs.writeFileSync(ALIAS_OUTPUT_PATH, JSON.stringify(sortedAliasMap, null, 2) + '\n', 'utf-8')
-  console.log(`[export] ${path.relative(ROOT, ALIAS_OUTPUT_PATH)}: ${Object.keys(aliasMap).length}件`)
+  // 画像の無いカード(R)は記事で使わないので、通称が付いているものだけ残す
+  const cards: SupportCardIndexEntry[] = entries
+    .filter((e) => e.image || e.aliases.length > 0)
+    .map((e) => ({
+      id: e.id,
+      name: e.name.en,
+      title: e.title.en ?? e.title.jp,
+      rarity: e.rarity,
+      type: e.type,
+      image: e.image,
+    }))
+  const aliases = entries
+    .flatMap((e) => e.aliases.map((alias): [string, number] => [alias, e.id]))
+    .toSorted(([a], [b]) => a.localeCompare(b))
+  const index: SupportCardIndexFile = { cards, aliases }
+  // 1件1行(整形すると肥大化し、1行に詰めると差分が読めない)
+  const lines = (items: unknown[]) => items.map((item) => `    ${JSON.stringify(item)}`).join(',\n')
+  const json = `{\n  "cards": [\n${lines(index.cards)}\n  ],\n  "aliases": [\n${lines(index.aliases)}\n  ]\n}\n`
+  fs.writeFileSync(INDEX_OUTPUT_PATH, json, 'utf-8')
+  const kb = (fs.statSync(INDEX_OUTPUT_PATH).size / 1024).toFixed(0)
+  console.log(`[export] ${path.relative(ROOT, INDEX_OUTPUT_PATH)}: ${cards.length}件 / 通称${aliases.length}件 (${kb}KB)`)
 }

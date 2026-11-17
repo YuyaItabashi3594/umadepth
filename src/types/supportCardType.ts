@@ -286,7 +286,19 @@ export type SupportCardGroupProps = {
   description?: string;
 }
 
+// エディタのカード一覧から選んだカード。DBのid(30028)で指定し、nameは記事コードを読むとき用の表示名。
+// Vueはunion型のpropsを1つに合成するため、ここでidを必須にすると旧形式の<SupportCard>でも必須扱いになり警告が出る
+export type SupportCardIdProps = {
+  id?: number;
+  name?: string;
+  type?: undefined;
+  rarity?: undefined;
+  width?: number;
+  description?: string;
+}
+
 export type SupportCardProps =
+  | SupportCardIdProps
   | SupportCardSpeedSSRProps
   | SupportCardSpeedSRProps
   | SupportCardStaminaSSRProps
@@ -299,16 +311,3 @@ export type SupportCardProps =
   | SupportCardWitSRProps
   | SupportCardPalsProps
   | SupportCardGroupProps
-
-// type -> rarity -> name[] のルックアップ（エディタのカスケード選択用）
-export const supportCardCatalog: Record<CardType, Partial<Record<CardRarity, readonly string[]>>> = {
-  speed: { ssr: supportCardSpeedSSR, sr: supportCardSpeedSR },
-  stamina: { ssr: supportCardStaminaSSR, sr: supportCardStaminaSR },
-  power: { ssr: supportCardPowerSSR, sr: supportCardPowerSR },
-  guts: { ssr: supportCardGutsSSR, sr: supportCardGutsSR },
-  wit: { ssr: supportCardWitSSR, sr: supportCardWitSR },
-  pals: { any: supportCardPals },
-}
-
-// group(Sirius/Throne)は type/rarity の組み合わせ選択に乗らない特殊枠なので別出し
-export const supportCardGroupNames = supportCardGroup

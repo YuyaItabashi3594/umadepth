@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { buildImageModalSnippet } from './editorShared'
+import type { ImageModalData } from './markdown/componentBlocks'
 
-const props = defineProps<{ slug: string }>()
+// initialは本文中の既存ブロックを編集するときに渡す
+const props = defineProps<{ slug: string; initial?: ImageModalData }>()
 
 const files = ref<string[]>([])
 const selectedFile = ref('')
-const alt = ref('')
-const width = ref(200)
+const alt = ref(props.initial?.alt ?? '')
+const width = ref(props.initial?.width ?? 200)
+// サムネイルを選ばなかったときに使う元のsrc(myuma以外の画像でも編集で消えないように)
+const initialSrc = props.initial?.src ?? ''
 
 const fetchImages = async (slug: string) => {
   files.value = []
@@ -21,12 +25,14 @@ const fetchImages = async (slug: string) => {
   } catch {
     files.value = []
   }
+  const current = files.value.find((f) => initialSrc === `/images/myuma/${slug}/${f}`)
+  if (current) selectedFile.value = current
 }
 
 watch(() => props.slug, fetchImages, { immediate: true })
 
 const src = computed(() =>
-  selectedFile.value ? `/images/myuma/${props.slug}/${selectedFile.value}` : '',
+  selectedFile.value ? `/images/myuma/${props.slug}/${selectedFile.value}` : initialSrc,
 )
 
 const builtSnippet = computed(() => buildImageModalSnippet(src.value, alt.value, width.value))
@@ -53,9 +59,10 @@ defineExpose({ builtSnippet })
         <span>{{ file }}</span>
       </button>
     </div>
+    <p v-if="src" class="hint">src: {{ src }}</p>
     <div class="fields">
-      <input v-model="alt" type="text" placeholder="alt" />
-      <input v-model.number="width" type="number" placeholder="width(px)" />
+      <input v-model="alt" type="text" placeholder="代替テキスト(alt)" />
+      <input v-model.number="width" type="number" placeholder="幅(px)" />
     </div>
   </div>
 </template>

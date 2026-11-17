@@ -8,7 +8,7 @@
 ## Environment Context
 - **OS**: Windows 11 (PowerShell/Command Prompt)
 - **Framework**: Vue 3 + Vite + TypeScript
-- **Package Manager**: npm (or pnpm/yarn - 常用するものに合わせて変更)
+- **Package Manager**: bun - 常用するものに合わせて変更
 
 ## Critical Safety Rules (DO NOT BYPASS)
 - **Command Prohibition**: NEVER execute destructive commands without explicit user confirmation.

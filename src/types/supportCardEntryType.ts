@@ -19,8 +19,18 @@ export interface SupportCardEntry {
   aliases: string[]
 }
 
-// src/data/supportCardAliases.json: '{type}/{rarity}/{name}' → <SupportCard>表示に必要な分だけ
-export type SupportCardAliasMap = Record<
-  string,
-  Pick<SupportCardEntry, 'id' | 'rarity' | 'type' | 'image'> & { title: string | null }
->
+// src/data/supportCardIndex.json: <SupportCard>表示に必要な分だけの軽量版(記事ページで読み込む)
+// 型推論を軽くするため、Recordではなく配列で持つ
+export interface SupportCardIndexEntry {
+  id: number
+  name: string
+  title: string | null
+  rarity: SupportCardRarity
+  type: SupportCardKind | null
+  image: string | null
+}
+
+export interface SupportCardIndexFile {
+  cards: SupportCardIndexEntry[]
+  aliases: [alias: string, id: number][] // '{type}/{rarity}/{name}' (記事の旧形式) → id
+}

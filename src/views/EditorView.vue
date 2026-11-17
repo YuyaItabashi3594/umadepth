@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { ref, reactive, computed, watch, nextTick, onBeforeUnmount } from 'vue'
+import { ref, reactive, computed, watch, onBeforeUnmount } from 'vue'
 import ComponentToolbar from '@/components/editor/ComponentToolbar.vue'
+import GachaBannerPicker from '@/components/editor/GachaBannerPicker.vue'
+import MarkdownEditor from '@/components/editor/markdown/MarkdownEditor.vue'
+import BlockEditDialog from '@/components/editor/markdown/BlockEditDialog.vue'
+import type { ComponentBlock } from '@/components/editor/markdown/componentBlocks'
 import {
   GACHA_FRONTMATTER_FIELDS,
   emptyGachaFrontmatter,
@@ -8,6 +12,7 @@ import {
   splitChanmiScript,
   buildGachaBodyTemplate,
   CHANMI_BODY_TEMPLATE,
+  PREVIEW_FRONTMATTER_MESSAGE,
 } from '@/components/editor/editorShared'
 
 type Category = 'gacha' | 'chanmi'
@@ -21,7 +26,12 @@ const newSlug = ref('')
 const frontmatter = reactive(emptyGachaFrontmatter())
 const body = ref('')
 const scriptPrefix = ref('')
-const textareaRef = ref<HTMLTextAreaElement | null>(null)
+const editorRef = ref<InstanceType<typeof MarkdownEditor> | null>(null)
+// 見た目表示がおかしいときの逃げ道として、全ブロックをコードで表示できるようにする
+const showAllCode = ref(false)
+const showPreview = ref(true)
+const editingBlock = ref<ComponentBlock | null>(null)
+const blockEditError = ref('')
 const saveStatus = ref<'idle' | 'saving' | 'saved' | 'error'>('idle')
 const savedSlug = ref('')
 
@@ -33,6 +43,16 @@ const savedArticleUrl = computed(() => {
 })
 
 const previewUrl = computed(() => `/editor-preview/${category.value}`)
+
+// bannerが未設定の既存記事は従来の画像を表示しているので、それを選択欄にも見せる
+const gachaFallbackSrc = computed(() =>
+  mode.value === 'edit' && selectedExistingSlug.value ? `/images/gacha/${selectedExistingSlug.value}.png` : undefined,
+)
+
+// ガチャ名が空なら選んだウマ娘/サポカの名前で埋める(既に入力済みなら触らない)
+const onBannerPicked = (label: string) => {
+  if (!frontmatter.gacha?.trim()) frontmatter.gacha = label
+}
 
 // 既存記事の構成に沿ったテンプレをbodyの初期状態として差し込む
 const applyTemplate = () => {
@@ -101,6 +121,18 @@ const pushPreview = async () => {
   } catch {
     // プレビュー更新の失敗は致命的ではないので握りつぶす
   }
+  postFrontmatterToPreview()
+}
+
+// MarkdownのHMRは本文(コンポーネント)しか差し替えず、frontmatter(名前付きexport)は古いまま残る。
+// ガチャ名・目玉画像・おすすめ表をすぐ反映させるため、frontmatterはiframeへ直接送る
+const previewFrameRef = ref<HTMLIFrameElement | null>(null)
+const postFrontmatterToPreview = () => {
+  if (category.value !== 'gacha') return
+  previewFrameRef.value?.contentWindow?.postMessage(
+    { type: PREVIEW_FRONTMATTER_MESSAGE, category: category.value, frontmatter: { ...frontmatter } },
+    window.location.origin,
+  )
 }
 const schedulePreview = () => {
   if (previewTimer) clearTimeout(previewTimer)
@@ -115,26 +147,28 @@ fetchExistingSlugs()
 applyTemplate()
 schedulePreview()
 
+// ツールバーのスニペットはすべてブロック要素なので、行の途中でも前後を改行で区切って入れる
 const insertSnippet = (snippet: string) => {
-  const el = textareaRef.value
-  if (!el) {
-    body.value += snippet
-    return
-  }
-  const start = el.selectionStart
-  const end = el.selectionEnd
-  body.value = body.value.slice(0, start) + snippet + body.value.slice(end)
-  nextTick(() => {
-    el.focus()
-    const pos = start + snippet.length
-    el.setSelectionRange(pos, pos)
-  })
+  if (editorRef.value) editorRef.value.insert(snippet, { block: true })
+  else body.value += snippet
 }
 
-const getSelectedText = () => {
-  const el = textareaRef.value
-  if (!el) return ''
-  return body.value.slice(el.selectionStart, el.selectionEnd)
+const getSelectedText = () => editorRef.value?.getSelectedText() ?? ''
+
+const openBlockEditor = (block: ComponentBlock) => {
+  blockEditError.value = ''
+  editingBlock.value = block
+}
+
+const applyBlockEdit = (snippet: string) => {
+  const block = editingBlock.value
+  if (!block) return
+  if (editorRef.value?.replaceBlock(block, snippet)) {
+    editingBlock.value = null
+  } else {
+    blockEditError.value = '編集中に本文が変わったため適用できませんでした。もう一度ブロックの「編集」から開き直してください。'
+    editingBlock.value = null
+  }
 }
 
 const save = async () => {
@@ -206,10 +240,13 @@ const save = async () => {
       </label>
     </div>
 
-    <section v-if="category === 'gacha'" class="info-card frontmatter-form">
-      <div v-for="field in GACHA_FRONTMATTER_FIELDS" :key="field.key" class="frontmatter-field">
-        <label :for="`fm-${field.key}`">{{ field.label }}</label>
-        <input :id="`fm-${field.key}`" v-model="frontmatter[field.key]" type="text" />
+    <section v-if="category === 'gacha'" class="info-card gacha-meta">
+      <GachaBannerPicker v-model="frontmatter.banner!" :fallback-src="gachaFallbackSrc" @picked="onBannerPicked" />
+      <div class="frontmatter-form">
+        <div v-for="field in GACHA_FRONTMATTER_FIELDS" :key="field.key" class="frontmatter-field">
+          <label :for="`fm-${field.key}`">{{ field.label }}</label>
+          <input :id="`fm-${field.key}`" v-model="frontmatter[field.key]" type="text" />
+        </div>
       </div>
     </section>
 
@@ -220,24 +257,47 @@ const save = async () => {
       <span class="hint">現在の本文を既存記事の構成テンプレで上書きします(gachaは上のgacha欄から見出しを生成)</span>
     </div>
 
+    <div class="view-options">
+      <label><input v-model="showAllCode" type="checkbox" /> すべてコードで表示</label>
+      <label><input v-model="showPreview" type="checkbox" /> プレビューを表示</label>
+      <span class="hint">ブロックは「編集」かクリックでフォームを開き、「&lt;/&gt;」でそのブロックだけコード表示</span>
+    </div>
+    <p v-if="blockEditError" class="status-error">{{ blockEditError }}</p>
+
     <div class="editor-split">
-      <textarea
-        ref="textareaRef"
+      <MarkdownEditor
+        ref="editorRef"
         v-model="body"
-        class="body-textarea"
-        rows="20"
+        class="body-editor"
+        :all-raw="showAllCode"
         placeholder="本文(Markdown)"
+        @edit-block="openBlockEditor"
       />
-      <div class="preview-pane">
+      <div v-if="showPreview" class="preview-pane">
         <div class="preview-header">
           <span>プレビュー</span>
           <a :href="previewUrl" target="_blank" rel="noopener" class="preview-open-link"
             >別タブで開く</a
           >
         </div>
-        <iframe :src="previewUrl" class="preview-frame" title="記事プレビュー" />
+        <iframe
+          ref="previewFrameRef"
+          :src="previewUrl"
+          class="preview-frame"
+          title="記事プレビュー"
+          @load="postFrontmatterToPreview"
+        />
       </div>
     </div>
+
+    <BlockEditDialog
+      v-if="editingBlock"
+      :key="editingBlock.from"
+      :block="editingBlock"
+      :slug="effectiveSlug"
+      @apply="applyBlockEdit"
+      @close="editingBlock = null"
+    />
 
     <div class="save-row">
       <button type="button" class="save-btn" :disabled="!effectiveSlug || saveStatus === 'saving'" @click="save">
@@ -312,6 +372,12 @@ const save = async () => {
   opacity: 0.7;
 }
 
+.gacha-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .frontmatter-form {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -337,13 +403,28 @@ const save = async () => {
   padding: 0.35rem 0.5rem;
 }
 
+.view-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.85rem;
+}
+
+.view-options .hint {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
 .editor-split {
   display: flex;
   gap: 1rem;
   align-items: stretch;
+  height: 75vh;
+  min-height: 420px;
 }
 
-.editor-split .body-textarea {
+.editor-split .body-editor {
   flex: 1;
   min-width: 0;
 }
@@ -371,7 +452,7 @@ const save = async () => {
 .preview-frame {
   flex: 1;
   width: 100%;
-  height: 460px;
+  min-height: 0;
   background-color: var(--color-background);
   border: 1px solid var(--color-border);
   border-radius: 0.5rem;
@@ -380,19 +461,16 @@ const save = async () => {
 @media (max-width: 900px) {
   .editor-split {
     flex-direction: column;
+    height: auto;
   }
-}
 
-.body-textarea {
-  width: 100%;
-  background-color: var(--color-background-soft);
-  border: 1px solid var(--color-border);
-  border-radius: 0.5rem;
-  color: var(--color-text);
-  padding: 0.75rem;
-  font-family: monospace;
-  font-size: 0.9rem;
-  resize: vertical;
+  .editor-split .body-editor {
+    height: 70vh;
+  }
+
+  .preview-frame {
+    height: 60vh;
+  }
 }
 
 .save-row {

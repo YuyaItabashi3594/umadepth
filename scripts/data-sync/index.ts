@@ -12,6 +12,8 @@ import { exportOutfits } from './outfit-export.ts'
 import { syncSupportList } from './support-umapyoi.ts'
 import { syncSupportGameTora, syncSupportImages, syncSupportTypeIcons } from './support-gametora.ts'
 import { exportSupportCards } from './support-export.ts'
+import { syncSupportEffects } from './support-effects.ts'
+import { exportSupportCardDetails } from './support-detail-export.ts'
 import { loadAliases } from './aliases.ts'
 import { rebuildSkillRelations, syncSkillIcons, syncSkills } from './skill-gametora.ts'
 import { exportSkills } from './skill-export.ts'
@@ -56,9 +58,11 @@ try {
       await syncSupportGameTora(db, refreshAll)
       await syncSupportImages(db)
       await syncSupportTypeIcons()
+      await syncSupportEffects(db, force || refreshAll)
     }
     loadAliases(db, 'support_cards')
     exportSupportCards(db)
+    exportSupportCardDetails(db)
   }
 
   // 衣装/サポカのgametora_jsonを参照するので最後に実行する

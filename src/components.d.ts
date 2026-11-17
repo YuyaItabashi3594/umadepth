@@ -33,6 +33,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SkillChip: typeof import('./components/SkillChip.vue')['default']
     SupportCard: typeof import('./components/SupportCard.vue')['default']
+    SupportCardDetailPanel: typeof import('./components/SupportCardDetailPanel.vue')['default']
     SupportCardForm: typeof import('./components/editor/SupportCardForm.vue')['default']
     SupportCardPicker: typeof import('./components/editor/SupportCardPicker.vue')['default']
   }

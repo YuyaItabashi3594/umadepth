@@ -2,6 +2,13 @@
 import { computed, ref } from 'vue';
 import type { SupportCardProps } from '@/types/supportCardType';
 import { aliasKeyOf, resolveSupportCard, type SupportCardRef } from '@/utils/supportCardIndex';
+import {
+  isSupportCardDetailDisabled,
+  SUPPORT_CARD_PANEL_ID,
+  SUPPORT_CARD_TRIGGER_ATTR,
+  supportCardDetailId,
+  toggleSupportCardDetail,
+} from '@/composables/useSupportCardDetail';
 
 // rarityの既定値は旧形式(type/rarity/name)で省略されたとき用。:id指定では使わない
 const props = withDefaults(
@@ -27,6 +34,13 @@ if (import.meta.env.DEV && !card.value) {
   );
 }
 
+// クリックで右上に詳細パネルを開く(エディタのブロックプレビュー内では無効)
+const interactive = !isSupportCardDetailDisabled();
+const isOpen = computed(() => supportCardDetailId.value === card.value?.id);
+const onActivate = (e: MouseEvent) => {
+  if (card.value) toggleSupportCardDetail(card.value.id, e.currentTarget as HTMLElement);
+};
+
 const imageFailed = ref(false);
 const imageSrc = computed(() => (!imageFailed.value && card.value?.image) || FALLBACK_IMAGE);
 const iconSrc = computed(() => (card.value?.type ? `/images/support-cards/types/${card.value.type}.png` : null));
@@ -37,7 +51,24 @@ const altText = computed(() => [props.name ?? card.value?.name, card.value?.titl
   <div :style="{ width: `${props.width}px`, maxWidth: '100%' }">
     <figure class="image">
       <!-- 新画像はカード絵のみなので、ゲーム内表示に合わせてレアリティ枠とタイプアイコンを重ねる -->
-      <div v-if="card && !imageFailed" class="card-frame" :class="`rarity-${card.rarity}`">
+      <component
+        :is="interactive ? 'button' : 'div'"
+        v-if="card && !imageFailed"
+        class="card-frame"
+        :class="[`rarity-${card.rarity}`, { 'card-button': interactive, open: isOpen }]"
+        v-bind="
+          interactive
+            ? {
+                type: 'button',
+                [SUPPORT_CARD_TRIGGER_ATTR]: '',
+                'aria-expanded': isOpen,
+                'aria-controls': isOpen ? SUPPORT_CARD_PANEL_ID : undefined,
+                title: 'Show details',
+              }
+            : {}
+        "
+        @click="interactive && onActivate($event)"
+      >
         <img
           :src="imageSrc"
           :alt="altText"
@@ -48,7 +79,7 @@ const altText = computed(() => [props.name ?? card.value?.name, card.value?.titl
           @error="imageFailed = true"
         />
         <img v-if="iconSrc" :src="iconSrc" alt="" aria-hidden="true" class="type-icon" />
-      </div>
+      </component>
       <img v-else :src="FALLBACK_IMAGE" :alt="props.name" />
       <figcaption v-if="props.description">{{ props.description }}</figcaption>
     </figure>
@@ -61,6 +92,30 @@ const altText = computed(() => [props.name ?? card.value?.name, card.value?.titl
   position: relative;
   padding: 3%;
   border-radius: 6% / 4.5%;
+}
+
+/* クリックで詳細パネルを開くボタン。見た目はカードのまま */
+.card-button {
+  display: block;
+  width: 100%;
+  border: none;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+  transition: transform 0.12s;
+}
+
+@media (hover: hover) {
+  .card-button:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.card-button:focus-visible,
+.card-button.open {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .rarity-ssr {

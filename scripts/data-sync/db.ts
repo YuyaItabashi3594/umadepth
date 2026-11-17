@@ -84,6 +84,16 @@ CREATE TABLE IF NOT EXISTS support_cards (
 );
 CREATE INDEX IF NOT EXISTS idx_support_cards_character ON support_cards(character_id);
 
+-- サポカ効果(友情ボーナス等)の名前。GameToraのsupport_effects。gametora_json.effects[n][0] / unique.effects[n].type の参照先
+CREATE TABLE IF NOT EXISTS support_effects (
+  id          INTEGER PRIMARY KEY,
+  name_en     TEXT,                           -- 未翻訳のものはNULL
+  name_ja     TEXT,
+  symbol      TEXT,                           -- 'percent' / 'none' / 'level'
+  raw_json    TEXT NOT NULL,
+  fetched_at  TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS support_card_aliases (
   alias            TEXT PRIMARY KEY,          -- 記事/既存コードでの呼び名
   support_card_id  INTEGER NOT NULL REFERENCES support_cards(id) ON DELETE CASCADE

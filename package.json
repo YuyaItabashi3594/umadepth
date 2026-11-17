@@ -13,7 +13,7 @@
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
     "format": "prettier --write --experimental-cli src/",
-    "data:sync": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/outfit-sync/index.ts"
+    "data:sync": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/data-sync/index.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",

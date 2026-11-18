@@ -34,6 +34,8 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SkillChip: typeof import('./components/SkillChip.vue')['default']
+    SkillChipForm: typeof import('./components/editor/SkillChipForm.vue')['default']
+    SkillPicker: typeof import('./components/editor/SkillPicker.vue')['default']
     SupportCard: typeof import('./components/SupportCard.vue')['default']
     SupportCardDetailBody: typeof import('./components/detail/SupportCardDetailBody.vue')['default']
     SupportCardDetailPanel: typeof import('./components/SupportCardDetailPanel.vue')['default']

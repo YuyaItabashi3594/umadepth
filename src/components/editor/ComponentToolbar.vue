@@ -6,13 +6,14 @@ import ImageDescriptionForm from './ImageDescriptionForm.vue'
 import CollapsibleForm from './CollapsibleForm.vue'
 import ImageModalForm from './ImageModalForm.vue'
 import UmaChipForm from './UmaChipForm.vue'
+import SkillChipForm from './SkillChipForm.vue'
 import { COMPONENT_LABELS, emptySupportCardData, type SupportCardData } from './editorShared'
 
 const props = defineProps<{ slug: string; getSelectedText: () => string }>()
 // inline: 文中(カーソル位置)にそのまま入れる。それ以外はブロックとして前後を改行で区切る
 const emit = defineEmits<{ insert: [snippet: string, options: { inline: boolean }] }>()
 
-type Panel = 'supportcard' | 'cardrow' | 'imagedescription' | 'collapsible' | 'imagemodal' | 'umachip' | null
+type Panel = 'supportcard' | 'cardrow' | 'imagedescription' | 'collapsible' | 'imagemodal' | 'umachip' | 'skillchip' | null
 
 const activePanel = ref<Panel>(null)
 const supportCardData = ref<SupportCardData>(emptySupportCardData())
@@ -24,6 +25,7 @@ const imageDescriptionRef = ref<InstanceType<typeof ImageDescriptionForm> | null
 const collapsibleRef = ref<InstanceType<typeof CollapsibleForm> | null>(null)
 const imageModalRef = ref<InstanceType<typeof ImageModalForm> | null>(null)
 const umaChipRef = ref<InstanceType<typeof UmaChipForm> | null>(null)
+const skillChipRef = ref<InstanceType<typeof SkillChipForm> | null>(null)
 
 const openPanel = (panel: Exclude<Panel, null>) => {
   if (panel === 'supportcard') supportCardData.value = emptySupportCardData()
@@ -56,8 +58,13 @@ const confirmInsert = () => {
     case 'umachip':
       snippet = umaChipRef.value?.builtSnippet ?? ''
       break
+    case 'skillchip':
+      snippet = skillChipRef.value?.builtSnippet ?? ''
+      break
   }
-  if (snippet) emit('insert', snippet, { inline: activePanel.value === 'umachip' })
+  // チップ(育成ウマ娘/スキル)は文中に入れる
+  const inline = activePanel.value === 'umachip' || activePanel.value === 'skillchip'
+  if (snippet) emit('insert', snippet, { inline })
   closePanel()
 }
 </script>
@@ -72,6 +79,7 @@ const confirmInsert = () => {
       <button type="button" @click="openPanel('collapsible')">{{ COMPONENT_LABELS.collapsible }}</button>
       <button type="button" @click="openPanel('imagemodal')">{{ COMPONENT_LABELS.imagemodal }}</button>
       <button type="button" @click="openPanel('umachip')">{{ COMPONENT_LABELS.umachip }}</button>
+      <button type="button" @click="openPanel('skillchip')">{{ COMPONENT_LABELS.skillchip }}</button>
     </div>
 
     <div v-if="activePanel" class="panel">
@@ -89,6 +97,7 @@ const confirmInsert = () => {
       />
       <ImageModalForm v-else-if="activePanel === 'imagemodal'" ref="imageModalRef" :slug="props.slug" />
       <UmaChipForm v-else-if="activePanel === 'umachip'" ref="umaChipRef" />
+      <SkillChipForm v-else-if="activePanel === 'skillchip'" ref="skillChipRef" />
 
       <div class="panel-actions">
         <button type="button" class="confirm-btn" @click="confirmInsert">挿入</button>

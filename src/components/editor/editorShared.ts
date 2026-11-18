@@ -9,6 +9,7 @@ export const COMPONENT_LABELS = {
   collapsible: '折りたたみ',
   imagemodal: '拡大画像',
   umachip: '育成ウマ娘',
+  skillchip: 'スキル',
 } as const
 
 // <SupportCard>1枚分。idがあれば :id 形式、無ければ旧形式(type/rarity/name)で書き出す
@@ -52,6 +53,11 @@ export function buildSupportCardTag(card: SupportCardData): string {
 // 文中に入れるインラインのチップ。表示名は通称が登録済みならそれ(Wedding Curren Chan)、無ければキャラ名
 export function buildUmaChipTag(id: number, name: string): string {
   return `<UmaChip :id="${id}" name="${escapeAttr(name)}" />`
+}
+
+// 文中に入れるスキルのチップ。名前で一意に引けないもの(継承固有など)だけ :id を付ける
+export function buildSkillChipTag(name: string, id?: number): string {
+  return id === undefined ? `<SkillChip name="${escapeAttr(name)}" />` : `<SkillChip :id="${id}" name="${escapeAttr(name)}" />`
 }
 
 export function buildCardRowSnippet(columns: number | null, cards: SupportCardData[]): string {

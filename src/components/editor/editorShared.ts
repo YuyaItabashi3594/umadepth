@@ -8,6 +8,7 @@ export const COMPONENT_LABELS = {
   imagedescription: '画像＋説明文',
   collapsible: '折りたたみ',
   imagemodal: '拡大画像',
+  umachip: '育成ウマ娘',
 } as const
 
 // <SupportCard>1枚分。idがあれば :id 形式、無ければ旧形式(type/rarity/name)で書き出す
@@ -46,6 +47,11 @@ export function buildSupportCardTag(card: SupportCardData): string {
   if (card.width) attrs.push(`:width="${card.width}"`)
   if (card.description) attrs.push(`description="${escapeAttr(card.description)}"`)
   return `<SupportCard ${attrs.join(' ')} />`
+}
+
+// 文中に入れるインラインのチップ。表示名は通称が登録済みならそれ(Wedding Curren Chan)、無ければキャラ名
+export function buildUmaChipTag(id: number, name: string): string {
+  return `<UmaChip :id="${id}" name="${escapeAttr(name)}" />`
 }
 
 export function buildCardRowSnippet(columns: number | null, cards: SupportCardData[]): string {

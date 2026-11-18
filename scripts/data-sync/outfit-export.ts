@@ -2,10 +2,13 @@ import fs from 'node:fs'
 import path from 'node:path'
 import type { DatabaseSync } from 'node:sqlite'
 import type { AptitudeGrade, Outfit, RunningStyle } from '../../src/types/outfitType.ts'
+import type { OutfitDetail, OutfitDetailFile, OutfitIndexFile, StatTuple } from '../../src/types/outfitDetailType.ts'
 import { ROOT } from './db.ts'
 
 // 本番(静的サイト)はDBを読めないので、ビルドに含めるJSONへ書き出す
 const OUTPUT_PATH = path.join(ROOT, 'src', 'data', 'outfits.json')
+const INDEX_OUTPUT_PATH = path.join(ROOT, 'src', 'data', 'outfitIndex.json')
+const DETAIL_OUTPUT_PATH = path.join(ROOT, 'src', 'data', 'outfitDetails.json')
 
 const RUNNING_STYLES: Record<number, RunningStyle> = { 1: 'front', 2: 'pace', 3: 'late', 4: 'end' }
 
@@ -94,6 +97,72 @@ export function exportOutfits(db: DatabaseSync) {
     .all() as unknown as OutfitRow[]
 
   fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true })
-  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(rows.map(toOutfit), null, 2) + '\n', 'utf-8')
+  const outfits = rows.map(toOutfit)
+  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(outfits, null, 2) + '\n', 'utf-8')
   console.log(`[export] ${path.relative(ROOT, OUTPUT_PATH)}: ${rows.length}件`)
+  exportOutfitIndex(outfits)
+  exportOutfitDetails(db, outfits)
+}
+
+// 記事中の<UmaChip>用。outfits.json(全項目)は記事ページには重いので、名前と画像だけの軽量版を別に出す
+function exportOutfitIndex(outfits: Outfit[]) {
+  const file: OutfitIndexFile = {
+    outfits: outfits.map((o) => ({ id: o.id, name: o.name.en, title: o.title.en, image: o.image })),
+    aliases: outfits.flatMap((o) => o.aliases.map((alias) => [alias, o.id] as [string, number])),
+  }
+  fs.writeFileSync(
+    INDEX_OUTPUT_PATH,
+    `{\n"outfits": [\n${file.outfits.map((o) => JSON.stringify(o)).join(',\n')}\n],\n"aliases": ${JSON.stringify(file.aliases)}\n}\n`,
+  )
+  console.log(`[export] ${path.relative(ROOT, INDEX_OUTPUT_PATH)}: ${file.outfits.length}件 / 通称${file.aliases.length}件`)
+}
+
+interface GameToraOutfitDetail {
+  skills_unique?: number[]
+  skills_innate?: number[]
+  skills_awakening?: number[]
+  skills_awakening_en?: number[] // グローバル版で覚醒スキルが違う衣装がある
+  skills_event?: number[]
+  base_stats?: number[]
+  five_star_stats?: number[]
+}
+
+const statTuple = (values: number[] | undefined) => (values?.length === 5 ? (values as StatTuple) : null)
+
+// 詳細パネル用。クリックしたときに読み込む
+function exportOutfitDetails(db: DatabaseSync, outfits: Outfit[]) {
+  const rows = db.prepare('SELECT id, gametora_slug, gametora_json FROM outfits').all() as unknown as {
+    id: number
+    gametora_slug: string
+    gametora_json: string | null
+  }[]
+  const rowById = new Map(rows.map((r) => [r.id, r]))
+  const details: OutfitDetail[] = outfits.map((o) => {
+    const row = rowById.get(o.id)
+    const g = (row?.gametora_json ? JSON.parse(row.gametora_json) : {}) as GameToraOutfitDetail
+    const t = o.talent
+    const a = o.aptitude
+    return {
+      id: o.id,
+      gametora: row?.gametora_slug ?? '',
+      rarity: o.rarity,
+      runningStyle: o.runningStyle,
+      releaseEn: o.releaseEn,
+      releaseJp: o.releaseJp,
+      talent: t ? [t.speed, t.stamina, t.power, t.guts, t.wit] : null,
+      aptitude: a ? [a.turf, a.dirt, a.short, a.mile, a.medium, a.long, a.front, a.pace, a.late, a.end] : null,
+      baseStats: statTuple(g.base_stats),
+      fiveStarStats: statTuple(g.five_star_stats),
+      skills: {
+        unique: g.skills_unique ?? [],
+        innate: g.skills_innate ?? [],
+        awakening: g.skills_awakening_en ?? g.skills_awakening ?? [],
+        event: g.skills_event ?? [],
+      },
+    }
+  })
+  const file: OutfitDetailFile = { outfits: details }
+  // 差分が見やすいよう1衣装1行で書き出す
+  fs.writeFileSync(DETAIL_OUTPUT_PATH, `{\n"outfits": [\n${file.outfits.map((d) => JSON.stringify(d)).join(',\n')}\n]\n}\n`)
+  console.log(`[export] ${path.relative(ROOT, DETAIL_OUTPUT_PATH)}: ${details.length}件`)
 }

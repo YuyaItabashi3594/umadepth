@@ -3,12 +3,12 @@ import { computed, ref } from 'vue';
 import type { SupportCardProps } from '@/types/supportCardType';
 import { aliasKeyOf, resolveSupportCard, type SupportCardRef } from '@/utils/supportCardIndex';
 import {
-  isSupportCardDetailDisabled,
-  SUPPORT_CARD_PANEL_ID,
-  SUPPORT_CARD_TRIGGER_ATTR,
-  supportCardDetailId,
-  toggleSupportCardDetail,
-} from '@/composables/useSupportCardDetail';
+  DETAIL_PANEL_ID,
+  DETAIL_TRIGGER_ATTR,
+  isDetailOpenFor,
+  isDetailPanelDisabled,
+  toggleDetail,
+} from '@/composables/useDetailPanel';
 
 // rarityの既定値は旧形式(type/rarity/name)で省略されたとき用。:id指定では使わない
 const props = withDefaults(
@@ -35,10 +35,10 @@ if (import.meta.env.DEV && !card.value) {
 }
 
 // クリックで右上に詳細パネルを開く(エディタのブロックプレビュー内では無効)
-const interactive = !isSupportCardDetailDisabled();
-const isOpen = computed(() => supportCardDetailId.value === card.value?.id);
+const interactive = !isDetailPanelDisabled();
+const isOpen = computed(() => isDetailOpenFor('support', card.value?.id));
 const onActivate = (e: MouseEvent) => {
-  if (card.value) toggleSupportCardDetail(card.value.id, e.currentTarget as HTMLElement);
+  if (card.value) toggleDetail('support', card.value.id, e.currentTarget as HTMLElement);
 };
 
 const imageFailed = ref(false);
@@ -60,9 +60,9 @@ const altText = computed(() => [props.name ?? card.value?.name, card.value?.titl
           interactive
             ? {
                 type: 'button',
-                [SUPPORT_CARD_TRIGGER_ATTR]: '',
+                [DETAIL_TRIGGER_ATTR]: '',
                 'aria-expanded': isOpen,
-                'aria-controls': isOpen ? SUPPORT_CARD_PANEL_ID : undefined,
+                'aria-controls': isOpen ? DETAIL_PANEL_ID : undefined,
                 title: 'Show details',
               }
             : {}

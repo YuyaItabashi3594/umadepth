@@ -2,11 +2,8 @@
 import SupportCard from '@/components/SupportCard.vue'
 import CardRow from '@/components/CardRow.vue'
 import type { ImageDescriptionImage } from './componentBlocks'
-import { disableSupportCardDetail } from '@/composables/useSupportCardDetail'
 
 defineProps<{ image: ImageDescriptionImage }>()
-// ブロックプレビューのクリックは編集ダイアログを開く操作なので、カードの詳細パネルは出さない
-disableSupportCardDetail()
 </script>
 
 <template>

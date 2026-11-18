@@ -58,6 +58,7 @@ export interface MarkdownImage {
 export interface ScanResult {
   blocks: ComponentBlock[]
   skills: InlineSkill[]
+  umas: InlineSkill[] // <UmaChip>(育成ウマ娘)。形はSkillChipと同じ(name / :id)
   images: MarkdownImage[]
 }
 
@@ -213,6 +214,7 @@ function matchBlock(text: string, lineStart: number, line: string): ComponentBlo
 }
 
 const SKILL_RE = /<SkillChip\b([^>]*?)\/>/g
+const UMA_RE = /<UmaChip\b([^>]*?)\/>/g
 const MD_IMAGE_RE = /!\[([^\]]*)\]\(([^)\s]+)[^)]*\)/g
 
 function scanInline(line: string, lineStart: number, result: ScanResult) {
@@ -223,13 +225,20 @@ function scanInline(line: string, lineStart: number, result: ScanResult) {
     const from = lineStart + (match.index ?? 0)
     result.skills.push({ from, to: from + match[0].length, name: attrs.get('name'), id: id ? Number(id) : undefined })
   }
+  for (const match of line.matchAll(UMA_RE)) {
+    const attrs = parseTag(match[0], 'UmaChip', ['name', ':id', 'id'])
+    if (!attrs) continue
+    const id = attrs.get(':id') ?? attrs.get('id')
+    const from = lineStart + (match.index ?? 0)
+    result.umas.push({ from, to: from + match[0].length, name: attrs.get('name'), id: id ? Number(id) : undefined })
+  }
   for (const match of line.matchAll(MD_IMAGE_RE)) {
     result.images.push({ lineEnd: lineStart + line.length, alt: match[1] ?? '', src: match[2] ?? '' })
   }
 }
 
 export function scanDocument(text: string): ScanResult {
-  const result: ScanResult = { blocks: [], skills: [], images: [] }
+  const result: ScanResult = { blocks: [], skills: [], umas: [], images: [] }
   let pos = 0
   let inFence = false
   while (pos <= text.length) {

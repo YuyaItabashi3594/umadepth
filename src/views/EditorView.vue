@@ -165,9 +165,9 @@ fetchExistingSlugs()
 applyTemplate()
 schedulePreview()
 
-// ツールバーのスニペットはすべてブロック要素なので、行の途中でも前後を改行で区切って入れる
-const insertSnippet = (snippet: string) => {
-  if (editorRef.value) editorRef.value.insert(snippet, { block: true })
+// ブロック要素は行の途中でも前後を改行で区切って入れる。インライン(育成ウマ娘のチップ)はカーソル位置にそのまま入れる
+const insertSnippet = (snippet: string, options: { inline: boolean } = { inline: false }) => {
+  if (editorRef.value) editorRef.value.insert(snippet, { block: !options.inline })
   else body.value += snippet
 }
 

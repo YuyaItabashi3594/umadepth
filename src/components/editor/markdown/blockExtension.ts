@@ -2,6 +2,8 @@ import { createApp, type App, type Component } from 'vue'
 import { Facet, RangeSet, StateEffect, StateField, type EditorState, type Extension, type Range } from '@codemirror/state'
 import { Decoration, EditorView, WidgetType, type DecorationSet } from '@codemirror/view'
 import SkillChip from '@/components/SkillChip.vue'
+import UmaChip from '@/components/UmaChip.vue'
+import { disableDetailPanel } from '@/composables/useDetailPanel'
 import BlockPreview from './BlockPreview.vue'
 import { scanDocument, type ComponentBlock, type ScanResult } from './componentBlocks'
 import { COMPONENT_LABELS } from '../editorShared'
@@ -49,6 +51,8 @@ class VueWidget extends WidgetType {
     const dom = document.createElement(this.inline ? 'span' : 'div')
     dom.className = this.inline ? 'cm-inline-widget' : 'cm-block-widget'
     const app = createApp(this.component, this.props(view, dom))
+    // エディタ内のクリックは編集操作なので、カード/ウマ娘の詳細パネルは出さない
+    disableDetailPanel(app)
     app.mount(dom)
     mountedApps.set(dom, app)
     // 画像の読み込みで高さが変わるので、CodeMirrorに再計測させる
@@ -176,12 +180,16 @@ function buildDecorations(state: EditorState, value: Omit<BlockState, 'decoratio
     atomic.push(deco.range(block.from, block.to))
   }
 
-  // インラインのSkillChipは、カーソルが重なっている間だけコードを見せる
+  // インラインのSkillChip/UmaChipは、カーソルが重なっている間だけコードを見せる
   const head = state.selection.main
-  for (const skill of scan.skills) {
-    if (allRaw || (head.from <= skill.to && head.to >= skill.from)) continue
-    const widget = new VueWidget(`skill:${skill.name}:${skill.id}`, SkillChip, () => ({ name: skill.name, id: skill.id }), true)
-    decos.push(Decoration.replace({ widget }).range(skill.from, skill.to))
+  const inlineChips = [
+    ...scan.skills.map((chip) => ({ chip, kind: 'skill', component: SkillChip })),
+    ...scan.umas.map((chip) => ({ chip, kind: 'uma', component: UmaChip })),
+  ]
+  for (const { chip, kind, component } of inlineChips) {
+    if (allRaw || (head.from <= chip.to && head.to >= chip.from)) continue
+    const widget = new VueWidget(`${kind}:${chip.name}:${chip.id}`, component, () => ({ name: chip.name, id: chip.id }), true)
+    decos.push(Decoration.replace({ widget }).range(chip.from, chip.to))
   }
 
   if (!allRaw) {

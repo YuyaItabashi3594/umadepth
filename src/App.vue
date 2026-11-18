@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue'
 import { RouterLink, RouterView, useRoute } from 'vue-router'
 import LeftSide from './components/LeftSide.vue'
-import SupportCardDetailPanel from './components/SupportCardDetailPanel.vue'
+import DetailPanel from './components/DetailPanel.vue'
 
 const isDev = import.meta.env.DEV
 
@@ -47,8 +47,8 @@ watch(
     <RouterView />
   </div>
 
-  <!-- 記事中の<SupportCard>をクリックしたときの詳細(右上) -->
-  <SupportCardDetailPanel />
+  <!-- 記事中の<SupportCard>/<UmaChip>をクリックしたときの詳細(右上) -->
+  <DetailPanel />
 </template>
 
 <style scoped>

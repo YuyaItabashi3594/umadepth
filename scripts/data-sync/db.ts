@@ -156,6 +156,19 @@ CREATE TABLE IF NOT EXISTS champions_meetings (
   PRIMARY KEY (series, round)
 );
 
+-- GameTora(/umamusume/racetracks)のコース。チャンミのレース条件からコースを引き、コース図を表示するのに使う。
+-- グローバル版はコース改修が日本版より遅れているので、GameToraの英語版と同じ時点(history)のデータを優先する
+CREATE TABLE IF NOT EXISTS racecourses (
+  id            INTEGER PRIMARY KEY,      -- GameToraのコースID(10602 = 東京 芝1600m)
+  track_id      INTEGER NOT NULL,         -- 競馬場ID(10006 = 東京)
+  terrain       INTEGER NOT NULL,         -- 1 芝 / 2 ダート
+  length        INTEGER NOT NULL,         -- 距離(m)
+  inout         INTEGER NOT NULL,         -- 1 なし / 2 内 / 3 外 / 4 外→内
+  image_url     TEXT NOT NULL,            -- コース図(simple/en)の元URL
+  image_source  TEXT,                     -- 保存済みのコース図をどのURLから作ったか。image_urlと違えば取り直す
+  fetched_at    TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS api_fetch_log (
   endpoint     TEXT PRIMARY KEY,
   fetched_at   TEXT NOT NULL,

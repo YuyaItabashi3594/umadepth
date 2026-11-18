@@ -15,6 +15,7 @@ declare module 'vue' {
     BlockPreview: typeof import('./components/editor/markdown/BlockPreview.vue')['default']
     CardRow: typeof import('./components/CardRow.vue')['default']
     CardRowForm: typeof import('./components/editor/CardRowForm.vue')['default']
+    ChanmiCourseMap: typeof import('./components/ChanmiCourseMap.vue')['default']
     ChanmiEventPicker: typeof import('./components/editor/ChanmiEventPicker.vue')['default']
     CollapsibleForm: typeof import('./components/editor/CollapsibleForm.vue')['default']
     CollapsibleSection: typeof import('./components/CollapsibleSection.vue')['default']

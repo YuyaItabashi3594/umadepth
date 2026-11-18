@@ -19,6 +19,7 @@ import { rebuildSkillRelations, syncSkillIcons, syncSkills } from './skill-gamet
 import { exportSkills } from './skill-export.ts'
 import { syncChampionsMeetingBanners, syncChampionsMeetings } from './chanmi-umapyoi.ts'
 import { exportChampionsMeetings } from './chanmi-export.ts'
+import { syncChanmiCourseImages, syncRacecourses } from './chanmi-courses.ts'
 
 const TARGETS = ['outfits', 'supports', 'skills', 'chanmi']
 const args = process.argv.slice(2)
@@ -79,6 +80,8 @@ try {
     if (!exportOnly) {
       await syncChampionsMeetings(db, force)
       await syncChampionsMeetingBanners(db)
+      await syncRacecourses(db, force)
+      await syncChanmiCourseImages(db)
     }
     exportChampionsMeetings(db)
   }

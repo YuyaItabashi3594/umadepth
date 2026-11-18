@@ -3,6 +3,7 @@ import path from 'node:path'
 import type { DatabaseSync } from 'node:sqlite'
 import type { ChampionsMeeting, SeriesKey } from '../../src/utils/championsMeeting.ts'
 import { ROOT } from './db.ts'
+import { courseImagePathOf, gametoraTrackUrlOf, resolveCourseId } from './chanmi-courses.ts'
 
 const OUTPUT_PATH = path.join(ROOT, 'src', 'data', 'championsMeetings.json')
 const JST_OFFSET_MS = 9 * 60 * 60 * 1000
@@ -30,6 +31,15 @@ export function exportChampionsMeetings(db: DatabaseSync) {
        FROM champions_meetings ORDER BY COALESCE(start_at, '9999'), jp_start_at, series, round`,
     )
     .all() as unknown as Row[]
+  const trackOfCourse = db.prepare('SELECT track_id FROM racecourses WHERE id = ? AND image_source IS NOT NULL')
+  const courseOf = (conditions: string | null): ChampionsMeeting['course'] => {
+    const id = resolveCourseId(db, conditions)
+    if (id === null) return null
+    const row = trackOfCourse.get(id) as { track_id: number } | undefined
+    const source = row ? gametoraTrackUrlOf(row.track_id) : null
+    const image = courseImagePathOf(id)
+    return source && fs.existsSync(path.join(ROOT, 'public', image)) ? { id, image, source } : null
+  }
   const entries: ChampionsMeeting[] = rows.map((r) => {
     const hasBanner =
       r.banner_path !== null && r.banner_source !== null && fs.existsSync(path.join(ROOT, 'public', r.banner_path))
@@ -43,6 +53,7 @@ export function exportChampionsMeetings(db: DatabaseSync) {
       banner: hasBanner ? r.banner_path : null,
       bannerKind: hasBanner ? bannerKindOf(r.banner_source!) : null,
       bannerLang: hasBanner ? bannerLangOf(r.banner_source!) : null,
+      course: courseOf(r.conditions),
     }
   })
   // 差分が見やすいよう1開催1行で書き出す

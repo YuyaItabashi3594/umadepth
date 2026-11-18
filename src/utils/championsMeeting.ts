@@ -40,6 +40,13 @@ export interface ChampionsMeeting {
   banner: string | null // public配下のバナー画像パス。未取得ならnull
   bannerKind: 'here' | 'coming' | null // here=開催中 coming=予告
   bannerLang: 'en' | 'ja' | null // 英語版が出たら英語版に置き換わる
+  course: ChanmiCourse | null // レース条件から特定したコース。特定できない/コース図が未取得ならnull
+}
+
+export interface ChanmiCourse {
+  id: number // GameToraのコースID
+  image: string // public配下のコース図(GameTora)
+  source: string // GameToraの競馬場ページ(出典)
 }
 
 export const seriesOf = (key: string) => SERIES.find((s) => s.key === key)

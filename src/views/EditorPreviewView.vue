@@ -9,6 +9,7 @@ interface PreviewModule extends GachaTiers {
   date?: string
   gacha?: string
   banner?: string
+  slug?: string // chanmiのみ。Editorからpostされる
 }
 
 // Editorが書き込むスクラッチファイルを読む専用ビュー。実記事とは別ディレクトリなので
@@ -46,6 +47,8 @@ const meta = computed(() => ({ ...currentModule.value, ...liveFrontmatter.value 
         <span>{{ meta.gacha }}</span>
       </div>
       <GachaTierTable v-if="category === 'gacha'" :tiers="meta" />
+      <!-- 実記事(ChanmiWrapper)と同じく冒頭にコース図。slugはEditorから届く -->
+      <ChanmiCourseMap v-if="category === 'chanmi' && meta.slug" :slug="meta.slug" />
       <component :is="currentModule.default" />
     </template>
   </div>

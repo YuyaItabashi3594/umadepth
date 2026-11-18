@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { computed, defineAsyncComponent } from 'vue'
+import ChanmiCourseMap from '@/components/ChanmiCourseMap.vue'
 
 const route = useRoute()
 
@@ -33,6 +34,7 @@ const markdownComponent = computed(() => {
       </div>
     </div>
     <h1 class="capitalize">{{ route.params.slug }} Chanmi</h1>
+    <ChanmiCourseMap v-if="markdownComponent" :slug="route.params.slug as string" />
     <component v-if="markdownComponent" :is="markdownComponent" />
     <div v-else>
       <p>{{ route.params.slug }} doesn't exist</p>

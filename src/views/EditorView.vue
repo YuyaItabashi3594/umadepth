@@ -143,12 +143,13 @@ const pushPreview = async () => {
 }
 
 // MarkdownのHMRは本文(コンポーネント)しか差し替えず、frontmatter(名前付きexport)は古いまま残る。
-// ガチャ名・目玉画像・おすすめ表をすぐ反映させるため、frontmatterはiframeへ直接送る
+// ガチャ名・目玉画像・おすすめ表をすぐ反映させるため、frontmatterはiframeへ直接送る。
+// chanmiはfrontmatterが無いので、記事冒頭のコース図を出すためにslugだけ送る
 const previewFrameRef = ref<HTMLIFrameElement | null>(null)
 const postFrontmatterToPreview = () => {
-  if (category.value !== 'gacha') return
+  const payload = category.value === 'gacha' ? { ...frontmatter } : { slug: effectiveSlug.value }
   previewFrameRef.value?.contentWindow?.postMessage(
-    { type: PREVIEW_FRONTMATTER_MESSAGE, category: category.value, frontmatter: { ...frontmatter } },
+    { type: PREVIEW_FRONTMATTER_MESSAGE, category: category.value, frontmatter: payload },
     window.location.origin,
   )
 }
@@ -157,6 +158,7 @@ const schedulePreview = () => {
   previewTimer = setTimeout(pushPreview, 400)
 }
 watch([body, scriptPrefix, category, frontmatter], schedulePreview, { deep: true })
+watch(effectiveSlug, postFrontmatterToPreview)
 onBeforeUnmount(() => {
   if (previewTimer) clearTimeout(previewTimer)
 })

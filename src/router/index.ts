@@ -36,8 +36,27 @@ const router = createRouter({
       path: '/gacha',
       name: 'gacha',
       component: () => import('../views/GachaView.vue'),
-    }
-
+    },
+    ...(import.meta.env.DEV
+      ? [
+          {
+            path: '/editor',
+            name: 'editor',
+            component: () => import('../views/EditorView.vue'),
+          },
+          {
+            path: '/editor-preview/:category',
+            name: 'editor-preview',
+            component: () => import('../views/EditorPreviewView.vue'),
+          },
+        ]
+      : []),
+    // どのルートにも当たらないURL。本番では /editor もここに来る(上のEditorルートはビルドで消えるため)
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('../views/NotFoundView.vue'),
+    },
   ],
 })
 

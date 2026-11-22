@@ -1,7 +1,7 @@
 export type CardType = "speed" | "stamina" | "power" | "guts" | "wit" | "pals";
 export type CardRarity = "ssr" | "sr" | "any";
 
-const supportCardSpeedSSR = [
+export const supportCardSpeedSSR = [
   "Biko Pegasus",
   "Nishino Flower",
   "Sakura Bakushin O",
@@ -27,7 +27,7 @@ const supportCardSpeedSSR = [
   "Tosen Jodan",
 ] as const;
 
-const supportCardSpeedSR = [
+export const supportCardSpeedSR = [
   "Vodka",
   "Shinko Windy",
   "Sweep Tosho",
@@ -36,7 +36,7 @@ const supportCardSpeedSR = [
   "King Halo",
 ] as const;
 
-const supportCardStaminaSSR = [
+export const supportCardStaminaSSR = [
   "Rice Shower",
   "Mejiro McQueen",
   "Super Creek",
@@ -56,14 +56,14 @@ const supportCardStaminaSSR = [
   "Mejiro Bright",
 ] as const;
 
-const supportCardStaminaSR = [
+export const supportCardStaminaSR = [
   "Manhattan Cafe",
   "Mayano Top Gun",
   "Zenno Rob Roy",
   "Tosen Jodan",
 ] as const;
 
-const supportCardPowerSSR = [
+export const supportCardPowerSSR = [
   "Smart Falcon",
   "El Condor Pasa",
   "Vodka",
@@ -85,7 +85,7 @@ const supportCardPowerSSR = [
   "Kawakami Princess",
 ] as const;
 
-const supportCardPowerSR = [
+export const supportCardPowerSR = [
   "Mejiro Ryan",
   "Mihono Bourbon",
   "Biwa Hayahide",
@@ -97,7 +97,7 @@ const supportCardPowerSR = [
   "Inari One",
 ] as const;
 
-const supportCardGutsSSR = [
+export const supportCardGutsSSR = [
   "Haru Urara",
   "Winning Ticket",
   "Ines Fujin",
@@ -114,7 +114,7 @@ const supportCardGutsSSR = [
   "Marverous Sunday",
 ] as const;
 
-const supportCardGutsSR = [
+export const supportCardGutsSR = [
   "Nice Nature",
   "Meisho Doto",
   "Yukino Bijin",
@@ -125,7 +125,7 @@ const supportCardGutsSR = [
   "Admire Vega",
 ] as const;
 
-const supportCardWitSSR = [
+export const supportCardWitSSR = [
   "Air Shakur",
   "Fine Motion",
   "Yukino Bijin",
@@ -142,7 +142,7 @@ const supportCardWitSSR = [
   "Rice Shower",
 ] as const;
 
-const supportCardWitSR = [
+export const supportCardWitSR = [
   "Mejiro Dober",
   "Matikanefukukitaru",
   "Marvelous Sunday",
@@ -154,14 +154,14 @@ const supportCardWitSR = [
   "Mejiro Ardan",
 ] as const;
 
-const supportCardPals = [
+export const supportCardPals = [
   "Kiryuin",
   "Tazuna",
   "Riko",
   "Anshinzawa"
 ] as const;
 
-const supportCardGroup = ['Sirius', 'Throne'] as const
+export const supportCardGroup = ['Sirius', 'Throne'] as const
 
 export type SupportCardSpeedSSR = typeof supportCardSpeedSSR[number];
 export type SupportCardSpeedSR = typeof supportCardSpeedSR[number];
@@ -286,7 +286,19 @@ export type SupportCardGroupProps = {
   description?: string;
 }
 
+// エディタのカード一覧から選んだカード。DBのid(30028)で指定し、nameは記事コードを読むとき用の表示名。
+// Vueはunion型のpropsを1つに合成するため、ここでidを必須にすると旧形式の<SupportCard>でも必須扱いになり警告が出る
+export type SupportCardIdProps = {
+  id?: number;
+  name?: string;
+  type?: undefined;
+  rarity?: undefined;
+  width?: number;
+  description?: string;
+}
+
 export type SupportCardProps =
+  | SupportCardIdProps
   | SupportCardSpeedSSRProps
   | SupportCardSpeedSRProps
   | SupportCardStaminaSSRProps

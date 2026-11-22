@@ -13,7 +13,7 @@ withDefaults(
 <template>
   <div
     class="flex gap-2 flex-wrap"
-    :style="columns ? { display: 'grid', gridTemplateColumns: `repeat(${columns}, 1fr)` } : {}"
+    :style="columns ? { display: 'grid', gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` } : {}"
   >
     <slot />
   </div>

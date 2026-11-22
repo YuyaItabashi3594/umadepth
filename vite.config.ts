@@ -6,6 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
 import Markdown from 'unplugin-vue-markdown/vite'
 import Components from 'unplugin-vue-components/vite'
+import { editorApiPlugin } from './vite-plugins/editorApi'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -26,6 +27,7 @@ export default defineConfig({
     }),
     vueDevTools(),
     tailwindcss(),
+    editorApiPlugin(),
   ],
   resolve: {
     alias: {

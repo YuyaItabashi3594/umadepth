@@ -2,7 +2,6 @@
   <div class="page-layout">
     <p>IGN:ねむにゃんω</p>
     <p>Club:ReYouRawr:A twitch streamer ReYou's one</p>
-    <a href="https://github.com/YuyaItabashi3594">Github</a>
     <p>Chanmi Result</p>
     <ul>
       <li>Gemini: B Final 1st(I started at tazuna/creek spotlight)</li>
@@ -17,7 +16,15 @@
       <li>Pisces: A Final 1st(Mayano Top Gun)</li>
       <li>Aries: Cooked by XOguri(70~ winrate)</li>
       <li>Taurus2: Cooked by 2Fronts(80% winrate)</li>
+      <li>Gemini2: 2nd,40% winrate,worst CM as only SMaru/VBourbon/Taishin could win</li>
+      <li>Cancer2: A Final 1st(Anime McQueen)</li>
+      <li>Leo2: A Final 1st(Nishino Flower)</li>
+      <li>Virgo2: A Final 1st(Agnes Digital)</li>
+      <li>Libra2: A Final 1st(Summer Dober)</li>
+      <li>Scorpio2: A Final 1st(Sweep Tosho)</li>
+      <li>Sagittarius2: Lost to VBourbon</li>
+      <li>Capricone2: Lost to VBourbon</li>
     </ul>
-    <p>Initial UI of Vue.js is already great so I reuse them a lot lol</p>
+    <p>Vibe Coding makes me useless dev</p>
   </div>
 </template>

@@ -27,6 +27,10 @@ const updateHistories: UpdateHistory[] = [
     date: '2026-06-14',
     title: 'Cancer Guide is skipped as we have to build again after Throne release...',
   },
+  {
+    date: '2026-11-22',
+    title: 'Update overall,vibe coding is fun lets go lol'
+  }
 ]
 
 const displayedHistories = computed(() => {
@@ -44,11 +48,11 @@ const displayedHistories = computed(() => {
       <h1>Welcome to Uma Depth guide!</h1>
     </div>
 
-    <section class="border rounded-md border-gray-500" style="margin-top: 40px">
+    <section class="info-card history-list">
       <ul>
         <li v-for="(history, index) in displayedHistories" :key="index">
-          <div class="">{{ history.date }}</div>
-          <div class="">{{ history.title }}</div>
+          <span class="history-date">{{ history.date }}</span>
+          <span class="history-title">{{ history.title }}</span>
         </li>
       </ul>
     </section>
@@ -58,7 +62,7 @@ const displayedHistories = computed(() => {
 <style scoped>
 h1 {
   font-weight: 500;
-  font-size: 2.6rem;
+  font-size: clamp(1.75rem, 1.2rem + 2.75vw, 2.6rem);
   position: relative;
 }
 
@@ -71,8 +75,46 @@ h3 {
   text-align: center;
 }
 
-ul li::before {
+.history-list {
+  margin-top: 2.5rem;
+}
+
+.history-list ul {
+  margin: 0;
+}
+
+.history-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.history-list li:not(:last-child) {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.history-list li::before {
   content: '';
+}
+
+.history-date {
+  flex: 0 0 auto;
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.history-title {
+  color: var(--color-text);
+}
+
+/* sm未満は日付→タイトルの2行表示 */
+@media (max-width: 639px) {
+  .history-list li {
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
 @media (min-width: 1024px) {

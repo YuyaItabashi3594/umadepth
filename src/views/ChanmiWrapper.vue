@@ -23,17 +23,7 @@ const markdownComponent = computed(() => {
 
 <template>
   <div class="md-content">
-    <div class="flex justify-center" style="margin-bottom: 40px">
-      <div class="info-card w-full max-w-[500px] mx-auto">
-        <ul>
-          <li>⭐️ I use this Style uma so I have better info</li>
-          <li>🔥 must-have</li>
-          <li>👀 recommended</li>
-          <li>❌ not working</li>
-        </ul>
-      </div>
-    </div>
-    <h1 class="capitalize">{{ route.params.slug }} Chanmi</h1>
+    <h1 class="capitalize">{{ route.params.slug }} CM</h1>
     <ChanmiCourseMap v-if="markdownComponent" :slug="route.params.slug as string" />
     <component v-if="markdownComponent" :is="markdownComponent" />
     <div v-else>

@@ -27,6 +27,10 @@ const updateHistories: UpdateHistory[] = [
     date: '2026-06-14',
     title: 'Cancer Guide is skipped as we have to build again after Throne release...',
   },
+  {
+    date: '2026-11-22',
+    title: 'Update overall,vibe coding is fun lets go lol'
+  }
 ]
 
 const displayedHistories = computed(() => {

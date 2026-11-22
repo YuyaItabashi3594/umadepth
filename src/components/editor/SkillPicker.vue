@@ -4,7 +4,7 @@ import SkillChip from '@/components/SkillChip.vue'
 import { useSkillData } from '@/composables/useSkillData'
 import type { SkillEntry } from '@/types/skillType'
 
-// DB(src/data/skills.json)のスキルを一覧表示し、クリックで選ばせる。エディタ専用。
+// DB(src/data/skills.json)のスキルを一覧表示し、クリックでselectを出す(SkillChipFormはそのまま挿入)。エディタ専用。
 // 各行は記事と同じ<SkillChip>なので、ホバー(キーボードはフォーカス)で詳細を確認してから選べる
 const props = defineProps<{ selectedId?: number }>()
 const emit = defineEmits<{ select: [skill: SkillEntry] }>()

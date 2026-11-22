@@ -65,9 +65,11 @@ onBeforeUnmount(() => {
   view = null
 })
 
-// ブロック系スニペットは行の途中に入るとブロックとして認識されないので、前後を改行で区切る
+// ブロック系スニペットは行の途中に入るとブロックとして認識されないので、前後を改行で区切る。
+// 挿入はエディタ上のパネルから続けて行うことがあるので、ページ自体はスクロールさせない(カーソル位置へはエディタ内だけスクロール)
 function insert(text: string, options: { block?: boolean } = {}) {
   if (!view) return
+  const { scrollX, scrollY } = window
   const { from, to } = view.state.selection.main
   let insertText = text
   if (options.block) {
@@ -81,6 +83,8 @@ function insert(text: string, options: { block?: boolean } = {}) {
     scrollIntoView: true,
   })
   view.focus()
+  // CodeMirrorのscrollIntoViewは外側(ウィンドウ)もスクロールする。エディタ内のスクロールが済んだ後で戻す
+  requestAnimationFrame(() => window.scrollTo(scrollX, scrollY))
 }
 
 function getSelectedText(): string {

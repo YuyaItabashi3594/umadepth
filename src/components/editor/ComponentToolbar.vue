@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onBeforeUnmount, ref } from 'vue'
 import SupportCardForm from './SupportCardForm.vue'
 import CardRowForm from './CardRowForm.vue'
 import ImageDescriptionForm from './ImageDescriptionForm.vue'
@@ -25,7 +25,6 @@ const imageDescriptionRef = ref<InstanceType<typeof ImageDescriptionForm> | null
 const collapsibleRef = ref<InstanceType<typeof CollapsibleForm> | null>(null)
 const imageModalRef = ref<InstanceType<typeof ImageModalForm> | null>(null)
 const umaChipRef = ref<InstanceType<typeof UmaChipForm> | null>(null)
-const skillChipRef = ref<InstanceType<typeof SkillChipForm> | null>(null)
 
 const openPanel = (panel: Exclude<Panel, null>) => {
   if (panel === 'supportcard') supportCardData.value = emptySupportCardData()
@@ -35,7 +34,20 @@ const openPanel = (panel: Exclude<Panel, null>) => {
 
 const closePanel = () => {
   activePanel.value = null
+  insertedFlash.value = false
 }
+
+// 続けて挿入できるよう、挿入してもパネルは閉じない。代わりに挿入したことを少しの間表示する
+const insertedFlash = ref(false)
+let flashTimer: ReturnType<typeof setTimeout> | undefined
+const emitInsert = (snippet: string, inline: boolean) => {
+  if (!snippet) return
+  emit('insert', snippet, { inline })
+  insertedFlash.value = true
+  clearTimeout(flashTimer)
+  flashTimer = setTimeout(() => (insertedFlash.value = false), 1500)
+}
+onBeforeUnmount(() => clearTimeout(flashTimer))
 
 const confirmInsert = () => {
   let snippet = ''
@@ -58,14 +70,9 @@ const confirmInsert = () => {
     case 'umachip':
       snippet = umaChipRef.value?.builtSnippet ?? ''
       break
-    case 'skillchip':
-      snippet = skillChipRef.value?.builtSnippet ?? ''
-      break
   }
-  // チップ(育成ウマ娘/スキル)は文中に入れる
-  const inline = activePanel.value === 'umachip' || activePanel.value === 'skillchip'
-  if (snippet) emit('insert', snippet, { inline })
-  closePanel()
+  // 育成ウマ娘のチップは文中に入れる(スキルはSkillChipFormが一覧のクリックで直接挿入する)
+  emitInsert(snippet, activePanel.value === 'umachip')
 }
 </script>
 
@@ -97,11 +104,13 @@ const confirmInsert = () => {
       />
       <ImageModalForm v-else-if="activePanel === 'imagemodal'" ref="imageModalRef" :slug="props.slug" />
       <UmaChipForm v-else-if="activePanel === 'umachip'" ref="umaChipRef" />
-      <SkillChipForm v-else-if="activePanel === 'skillchip'" ref="skillChipRef" />
+      <!-- スキルは一覧のクリックでそのまま挿入する -->
+      <SkillChipForm v-else-if="activePanel === 'skillchip'" @insert="emitInsert($event, true)" />
 
       <div class="panel-actions">
-        <button type="button" class="confirm-btn" @click="confirmInsert">挿入</button>
-        <button type="button" class="cancel-btn" @click="closePanel">キャンセル</button>
+        <button v-if="activePanel !== 'skillchip'" type="button" class="confirm-btn" @click="confirmInsert">挿入</button>
+        <button type="button" class="cancel-btn" @click="closePanel">閉じる</button>
+        <output v-if="insertedFlash" class="inserted-flash">挿入しました</output>
       </div>
     </div>
   </div>
@@ -153,7 +162,13 @@ const confirmInsert = () => {
 
 .panel-actions {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
+}
+
+.inserted-flash {
+  font-size: 0.8rem;
+  color: var(--color-accent);
 }
 
 .confirm-btn {

@@ -1,37 +1,41 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import SkillChip from '@/components/SkillChip.vue'
 import SkillPicker from './SkillPicker.vue'
 import { buildSkillChipTag } from './editorShared'
 import { findSkill, useSkillData } from '@/composables/useSkillData'
 import type { SkillEntry } from '@/types/skillType'
 
-// 文中に<SkillChip>(ホバーで詳細が出るスキルのチップ)を入れるフォーム
+// 文中に<SkillChip>(ホバーで詳細が出るスキルのチップ)を入れるフォーム。
+// 一覧のクリックでそのまま挿入する(続けて何個でも入れられる)
+const emit = defineEmits<{ insert: [snippet: string] }>()
+
 const store = useSkillData()
-const selected = ref<SkillEntry | null>(null)
+const lastInserted = ref<SkillEntry | null>(null)
 
 // 名前だけで同じスキルに解決できるなら name だけ(読みやすい)、継承固有などで紛れるなら :id も付ける
-const builtSnippet = computed(() => {
-  const skill = selected.value
-  if (!skill) return ''
+const snippetOf = (skill: SkillEntry) => {
   const nameIsUnique = store.value ? findSkill(store.value, { name: skill.name })?.id === skill.id : false
   return buildSkillChipTag(skill.name, nameIsUnique ? undefined : skill.id)
-})
+}
 
-defineExpose({ builtSnippet })
+const insert = (skill: SkillEntry) => {
+  lastInserted.value = skill
+  emit('insert', snippetOf(skill))
+}
 </script>
 
 <template>
   <div class="skill-chip-form">
-    <div v-if="selected" class="selected">
-      <span class="label">選択中:</span>
-      <SkillChip :id="selected.id" />
-      <code class="snippet">{{ builtSnippet }}</code>
-    </div>
-    <p v-else class="hint">
-      一覧からスキルを選んでください(ホバーで詳細)。文中(カーソル位置)にチップとして入り、記事でもホバー/タップで詳細が出ます
+    <p class="hint">
+      クリックで文中(カーソル位置)に挿入します。ホバーで詳細を確認でき、続けて何個でも挿入できます
     </p>
-    <SkillPicker :selected-id="selected?.id" @select="selected = $event" />
+    <div v-if="lastInserted" class="selected">
+      <span class="label">直前に挿入:</span>
+      <SkillChip :id="lastInserted.id" />
+      <code class="snippet">{{ snippetOf(lastInserted) }}</code>
+    </div>
+    <SkillPicker :selected-id="lastInserted?.id" @select="insert" />
   </div>
 </template>
 

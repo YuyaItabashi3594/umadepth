@@ -4,7 +4,16 @@ import { RouterLink, RouterView, useRoute } from 'vue-router'
 import LeftSide from './components/LeftSide.vue'
 import DetailPanel from './components/DetailPanel.vue'
 
-const isDev = import.meta.env.DEV
+// Editorは開発時だけ。テンプレートの v-if だと本番ビルドに "/editor" の文字列が残るので、
+// スクリプト側で配列にして import.meta.env.DEV(ビルド時にfalseへ置換)ごと消えるようにする
+const NAV_LINKS = [
+  { to: '/', label: 'Home' },
+  { to: '/about', label: 'About' },
+  { to: '/motivation', label: 'Motivation' },
+  { to: '/chanmi', label: 'Chanmi' },
+  { to: '/gacha', label: 'Gacha' },
+  ...(import.meta.env.DEV ? [{ to: '/editor', label: 'Editor' }] : []),
+]
 
 // md未満はナビが横スクロールになるので、現在ページのリンクを表示領域内に入れる
 const route = useRoute()
@@ -28,12 +37,7 @@ watch(
     </div>
 
     <nav ref="navRef">
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-      <RouterLink to="/motivation">Motivation</RouterLink>
-      <RouterLink to="/chanmi">Chanmi</RouterLink>
-      <RouterLink to="/gacha">Gacha</RouterLink>
-      <RouterLink v-if="isDev" to="/editor">Editor</RouterLink>
+      <RouterLink v-for="link in NAV_LINKS" :key="link.to" :to="link.to">{{ link.label }}</RouterLink>
     </nav>
 
     <div class="header-right">

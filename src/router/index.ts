@@ -51,6 +51,12 @@ const router = createRouter({
           },
         ]
       : []),
+    // どのルートにも当たらないURL。本番では /editor もここに来る(上のEditorルートはビルドで消えるため)
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('../views/NotFoundView.vue'),
+    },
   ],
 })
 

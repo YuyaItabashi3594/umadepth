@@ -39,7 +39,6 @@ declare module 'vue' {
     SkillPicker: typeof import('./components/editor/SkillPicker.vue')['default']
     SupportCard: typeof import('./components/SupportCard.vue')['default']
     SupportCardDetailBody: typeof import('./components/detail/SupportCardDetailBody.vue')['default']
-    SupportCardDetailPanel: typeof import('./components/SupportCardDetailPanel.vue')['default']
     SupportCardForm: typeof import('./components/editor/SupportCardForm.vue')['default']
     SupportCardPicker: typeof import('./components/editor/SupportCardPicker.vue')['default']
     UmaChip: typeof import('./components/UmaChip.vue')['default']
